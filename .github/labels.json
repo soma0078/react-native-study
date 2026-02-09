@@ -1,0 +1,157 @@
+[
+  {
+    "name": "🙋 type: question",
+    "color": "B3E5FC",
+    "description": "학습 중 궁금한 점을 물어보는 이슈"
+  },
+  {
+    "name": "📝 type: assignment",
+    "color": "FFEB99",
+    "description": "주차별 과제 제출"
+  },
+  {
+    "name": "🐛 type: bug",
+    "color": "FFCCCC",
+    "description": "버그나 오류 신고"
+  },
+  {
+    "name": "✨ type: feature",
+    "color": "C8E6C9",
+    "description": "새로운 기능 추가"
+  },
+  {
+    "name": "📚 type: docs",
+    "color": "E1BEE7",
+    "description": "문서 작업"
+  },
+  {
+    "name": "📖 week-01",
+    "color": "B3E5FC",
+    "description": "Week 1 관련 이슈"
+  },
+  {
+    "name": "📖 week-02",
+    "color": "B3E5FC",
+    "description": "Week 2 관련 이슈"
+  },
+  {
+    "name": "📖 week-03",
+    "color": "B3E5FC",
+    "description": "Week 3 관련 이슈"
+  },
+  {
+    "name": "📖 week-04",
+    "color": "B3E5FC",
+    "description": "Week 4 관련 이슈"
+  },
+  {
+    "name": "📖 week-05",
+    "color": "B3E5FC",
+    "description": "Week 5 관련 이슈"
+  },
+  {
+    "name": "📖 week-06",
+    "color": "B3E5FC",
+    "description": "Week 6 관련 이슈"
+  },
+  {
+    "name": "📖 week-07",
+    "color": "B3E5FC",
+    "description": "Week 7 관련 이슈"
+  },
+  {
+    "name": "📖 week-08",
+    "color": "B3E5FC",
+    "description": "Week 8 관련 이슈"
+  },
+  {
+    "name": "📖 week-09",
+    "color": "B3E5FC",
+    "description": "Week 9 관련 이슈"
+  },
+  {
+    "name": "📖 week-10",
+    "color": "B3E5FC",
+    "description": "Week 10 관련 이슈"
+  },
+  {
+    "name": "📖 week-11",
+    "color": "B3E5FC",
+    "description": "Week 11 관련 이슈"
+  },
+  {
+    "name": "📖 week-12",
+    "color": "B3E5FC",
+    "description": "Week 12 관련 이슈"
+  },
+  {
+    "name": "📖 week-13",
+    "color": "B3E5FC",
+    "description": "Week 13 관련 이슈"
+  },
+  {
+    "name": "📖 week-14",
+    "color": "B3E5FC",
+    "description": "Week 14 관련 이슈"
+  },
+  {
+    "name": "📖 week-15",
+    "color": "B3E5FC",
+    "description": "Week 15 관련 이슈"
+  },
+  {
+    "name": "📖 week-16",
+    "color": "B3E5FC",
+    "description": "Week 16 관련 이슈"
+  },
+  {
+    "name": "🟢 difficulty: easy",
+    "color": "C8E6C9",
+    "description": "쉬운 난이도 - 입문자용"
+  },
+  {
+    "name": "🟡 difficulty: medium",
+    "color": "FFEB99",
+    "description": "중간 난이도"
+  },
+  {
+    "name": "🔴 difficulty: hard",
+    "color": "FFCCCC",
+    "description": "높은 난이도 - 심화 학습"
+  },
+  {
+    "name": "👨‍💻 for: Senior",
+    "color": "BBDEFB",
+    "description": "Frontend Senior 개발자 대상"
+  },
+  {
+    "name": "👨‍💼 for: Junior",
+    "color": "DCEDC8",
+    "description": "Frontend Junior 개발자 대상"
+  },
+  {
+    "name": "🎨 for: 디자이너",
+    "color": "FFB3D9",
+    "description": "UX/UI 디자이너 대상"
+  },
+  {
+    "name": "👥 for: all",
+    "color": "D7CCC8",
+    "description": "모든 팀원 대상"
+  },
+  {
+    "name": "🆘 status: help-wanted",
+    "color": "FFCCB2",
+    "description": "도움이 필요한 이슈"
+  },
+  {
+    "name": "🚀 status: good-first-issue",
+    "color": "DCEDC8",
+    "description": "입문자가 처음 시작하기 좋은 이슈"
+  },
+  {
+    "name": "🏃 status: in-progress",
+    "color": "E1BEE7",
+    "description": "현재 진행 중인 이슈"
+  }
+]
