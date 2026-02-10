@@ -51,7 +51,7 @@ react-native-study/
 │   ├── guides/           # 가이드 문서
 │   └── troubleshooting/  # 문제 해결 모음
 ├── members/              # 개인 학습 정리 공간
-│   ├── frontend-senior/  # 3년차 개발자
+│   ├── frontend/         # 3년차 개발자
 │   ├── frontend-junior/  # 1년차 개발자
 │   └── designer/         # 디자이너
 ├── projects/             # 실습 프로젝트
