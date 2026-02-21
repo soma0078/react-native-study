@@ -1,7 +1,8 @@
 ---
 name: 질문
 about: 학습 중 궁금한 점을 물어보세요
-labels: type: question
+title: "[QUESTION]: 질문 제목"
+labels: "🙋 type: question"
 ---
 
 ## 🙋 질문 내용

@@ -1,7 +1,8 @@
 ---
 name: 주차별 과제
 about: 주차별 과제를 등록합니다
-labels: type: assignment
+title: "[ASSIGNMENT]: 과제 제목"
+labels: "📝 type: assignment"
 ---
 
 ## 📚 주차 정보
