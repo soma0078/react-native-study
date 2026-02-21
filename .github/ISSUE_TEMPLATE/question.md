@@ -1,5 +1,5 @@
 ---
-name: 질문
+name: 학습 질문
 about: 학습 중 궁금한 점을 물어보세요
 title: "[QUESTION]: 질문 제목"
 labels: "🙋 type: question"
