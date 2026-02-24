@@ -13,18 +13,21 @@ main (배포 브랜치)
 ## 브랜치 네이밍 규칙
 
 ### Feature 브랜치
+
 ```bash
 feature/[이름]-week-[주차]-[과제명]
 # 예: feature/junior-week-03-profile-card
 ```
 
 ### Fix 브랜치
+
 ```bash
 fix/[이름]-[버그명]
-# 예: fix/senior-navigation-error
+# 예: fix/seungyeon-navigation-error
 ```
 
 ### Docs 브랜치
+
 ```bash
 docs/[문서명]
 # 예: docs/navigation-guide
@@ -33,6 +36,7 @@ docs/[문서명]
 ## 커밋 메시지 컨벤션
 
 ### 기본 형식
+
 ```
 type: subject
 
@@ -40,6 +44,7 @@ body (선택)
 ```
 
 ### Type 종류
+
 - `feat`: 새로운 기능 추가
 - `fix`: 버그 수정
 - `docs`: 문서 수정
@@ -49,6 +54,7 @@ body (선택)
 - `chore`: 빌드, 설정 파일 수정
 
 ### 예시
+
 ```bash
 feat: Week 3 프로필 카드 컴포넌트 구현
 
@@ -164,6 +170,7 @@ git push origin feature/[브랜치명]
 ## 유용한 Git 명령어
 
 ### 브랜치 관련
+
 ```bash
 # 현재 브랜치 확인
 git branch
@@ -179,6 +186,7 @@ git checkout -b [새브랜치명]
 ```
 
 ### 커밋 관련
+
 ```bash
 # 마지막 커밋 메시지 수정
 git commit --amend
@@ -194,6 +202,7 @@ git stash pop
 ```
 
 ### 히스토리 확인
+
 ```bash
 # 커밋 로그 보기
 git log
@@ -216,6 +225,7 @@ git log --graph --oneline --all
 ## 트러블슈팅
 
 ### 실수로 main에 커밋한 경우
+
 ```bash
 # 커밋 취소 (변경사항은 유지)
 git reset HEAD^
@@ -229,6 +239,7 @@ git commit -m "커밋 메시지"
 ```
 
 ### 푸시 후 커밋 메시지 수정하고 싶은 경우
+
 ```bash
 # 마지막 커밋 메시지 수정
 git commit --amend

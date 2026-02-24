@@ -25,7 +25,7 @@ react-native-study/
 │   └── troubleshooting/         # 문제 해결 모음
 │
 ├── members/                     # 개인 학습 정리 공간
-│   ├── frontend/                # 3년차 개발자
+│   ├── seungyeon/               # 3년차 개발자
 │   │   ├── README.md           # 학습 목표, 진행 상황
 │   │   ├── week-01/
 │   │   │   ├── notes.md        # 학습 노트
@@ -36,7 +36,7 @@ react-native-study/
 │   │       ├── 2026-02-10.md
 │   │       └── 2026-02-15.md
 │   │
-│   ├── frontend-junior/         # 1년차 개발자
+│   ├── soma0078/                # 1년차 개발자
 │   │   ├── README.md
 │   │   ├── week-01/
 │   │   ├── week-02/

@@ -51,8 +51,8 @@ react-native-study/
 │   ├── guides/           # 가이드 문서
 │   └── troubleshooting/  # 문제 해결 모음
 ├── members/              # 개인 학습 정리 공간
-│   ├── frontend/         # 3년차 개발자
-│   ├── frontend-junior/  # 1년차 개발자
+│   ├── seungyeon/        # 3년차 개발자
+│   ├── soma0078/         # 1년차 개발자
 │   └── designer/         # 디자이너
 ├── projects/             # 실습 프로젝트
 │   ├── phase1-basics/
@@ -119,7 +119,7 @@ cd react-native-study
 
 ### 미팅
 
-- 2주 1회 화요일 대면 (1시간)
+- 2주 1회 목요일 대면 (1시간)
 - 전주 학습 내용 공유 & 코드 리뷰
 - 다음 주 과제 논의
 
