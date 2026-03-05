@@ -32,7 +32,7 @@ export default function Index() {
 
       <View style={styles.bioBubble}>
         <Text style={styles.bioText}>
-          {`안녕하세요! 👋 \n새로운 기술을 배우는 것을 즐기는 개발자입니다. \n현재 React Native를 통해 \n모바일 앱 개발의 세계에 입문했습니다. \n앞으로 멋진 UI와 기능을 가진 앱을 만들고 싶습니다!`}
+          {`안녕하세요! 👋 \n현재 React Native를 통해 \n모바일 앱 개발의 세계에 입문했습니다. \n앞으로 멋진 UI와 기능을 가진 앱을 \n만들고 싶습니다!`}
         </Text>
       </View>
     </View>
