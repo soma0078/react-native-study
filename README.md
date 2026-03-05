@@ -22,25 +22,6 @@ Frontend 개발자와 UX/UI 디자이너가 함께하는 React Native 학습 저
 - 간단한 화면 독립 구현 가능
 - 디자인 → 코드 변환 감각 습득
 
-## 📅 스터디 일정 (12-16주)
-
-### Phase 1: 기초 다지기 (3-4주)
-
-- Week 1-2: 환경 설정 & React 기초
-- Week 3-4: RN 기본 컴포넌트
-
-### Phase 2: 실전 기능 구현 (4-5주)
-
-- Week 5-6: 상태 관리 & 내비게이션
-- Week 7-8: 사용자 인터랙션
-- Week 9: API 연동
-
-### Phase 3: 실무 프로젝트 (5-7주)
-
-- Week 10-11: 프로젝트 기획 & 설계
-- Week 12-14: 개발 스프린트
-- Week 15-16: 최적화 & 배포
-
 ## 📁 저장소 구조
 
 ```
@@ -92,9 +73,10 @@ cd react-native-study
 
 ### 과제 제출
 
-1. 과제용 브랜치 생성: `git checkout -b feature/[이름]-week-XX-과제`
-2. 코드 작성 및 커밋
-3. PR 생성 및 리뷰 요청
+1. 과제는 Issues에서 확인
+2. 과제용 브랜치 생성: `git checkout -b feature/[이름]-week-XX-과제`
+3. 코드 작성 및 커밋
+4. PR 생성 및 리뷰 요청(reviewers 할당)
 
 ### 지식 공유
 
@@ -111,9 +93,12 @@ cd react-native-study
 
 ## 📖 필수 문서
 
-- [Git 워크플로우](docs/guides/Git-워크플로우.md)
-- [코드 리뷰 가이드](docs/guides/코드-리뷰-가이드.md)
-- [PR 작성 가이드](docs/guides/PR-작성-가이드.md)
+- [스터디 커리큘럼](docs/스터디-커리큘럼.md) - 전체 10-14주 로드맵 및 주차별 학습 목표
+- [GitHub 관리 구조](docs/GitHub-관리-구조.md) - 이슈/PR/브랜치 운영 방식
+- [개인 학습 정리 가이드](docs/개인-학습-정리-가이드.md) - 학습 노트 작성 방법
+- [환경 설정 가이드](docs/guides/환경-설정-가이드.md) - 개발 환경 세팅
+- [Git 워크플로우](docs/guides/Git-워크플로우.md) - 브랜치 전략 및 커밋 컨벤션
+- [코드 리뷰 가이드](docs/guides/코드-리뷰-가이드.md) - PR 리뷰 방법
 
 ## 📝 스터디 규칙
 
@@ -147,7 +132,7 @@ docs: Navigation 가이드 추가
 - `type: feature` - 새 기능
 - `type: docs` - 문서
 
-- `week-01` ~ `week-16` - 주차별
+- `week-01` ~ `week-14` - 주차별
 - `difficulty: easy/medium/hard` - 난이도
 - `for: 3년차/1년차/디자이너/all` - 대상
 
@@ -180,9 +165,3 @@ docs: Navigation 가이드 추가
 
 - Issues: 학습 관련 질문
 - Discussions: 자유로운 의견 교환
-
-## 📄 License
-
-This project is for educational purposes.
-
----
