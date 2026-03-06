@@ -1,50 +1,49 @@
-# Welcome to your Expo app 👋
+# soma0078-first-app
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+React Native core components와 expo 라이브러리를 활용한 실습 프로젝트
 
-## Get started
+## 기술 스택
 
-1. Install dependencies
+- React Native 0.81 / React 19
+- Expo SDK 54 / Expo Router
+- TypeScript
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## 실행 방법
 
 ```bash
-npm run reset-project
+npm install
+npm start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 구현 사항
 
-## Learn more
+- [x] 프로필 화면
+  - 프로필 정보 (닉네임 / 이름 / 직무)
+  - Interests 섹션 (chip UI, Pressable)
+  - Skills 섹션 (SectionList + 2열 카드 그리드)
+- [x] 레이아웃 패턴
+  - 배경 이미지 + 프로필 이미지 오버랩 (ImageBackground, Image)
+  - 카드 (infoCard)
+  - 칩 (chip)
+  - 그리드 (2열 카드)
 
-To learn more about developing your project with Expo, look at the following resources:
+## 프로젝트 구조
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```
+app/
+├── _layout.tsx        # Root Stack Navigator
+├── +not-found.tsx     # 404 페이지
+└── (tabs)/
+    ├── _layout.tsx    # Bottom Tab Navigator
+    ├── index.tsx      # Home
+    ├── about.tsx      # About
+    └── profile.tsx    # Profile
+```
 
-## Join the community
+## todo
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- [ ] `Home`, `About` 화면 UI 구현
+- [ ] Expo SDK 주요 라이브러리 연동 (Camera, ImagePicker 등)
+- [ ] React Native 애니메이션 적용 (`Reanimated`)
+- [ ] 전역 상태 관리 및 테마 설정 (`Appearance`, `Context API`)
+- [ ] 제스처 인터랙션 구현 (`Gesture Handler`)
