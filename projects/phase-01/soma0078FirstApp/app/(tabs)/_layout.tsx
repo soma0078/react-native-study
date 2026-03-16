@@ -31,9 +31,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="about"
+        name="recipes"
         options={{
-          title: "About",
+          title: "Recipes",
           tabBarIcon: ({ focused, color }) => (
             <MaterialCommunityIcons
               name={
