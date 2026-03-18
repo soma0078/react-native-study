@@ -34,6 +34,7 @@ export default function TabLayout() {
         name="recipes"
         options={{
           title: "Recipes",
+          headerShown: false,
           tabBarIcon: ({ focused, color }) => (
             <MaterialCommunityIcons
               name={
@@ -51,6 +52,7 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: "Profile",
+          headerShown: false,
           tabBarIcon: ({ focused, color }) => (
             <FontAwesome
               name={focused ? "user-circle" : "user-circle-o"}
