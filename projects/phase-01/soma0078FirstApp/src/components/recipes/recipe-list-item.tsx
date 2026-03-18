@@ -1,11 +1,11 @@
-import { Recipe } from "@/app/types/recipes.type";
+import { Recipe } from "@/types/recipes.type";
 import { Image, Text, View } from "react-native";
 
-interface RecipeItemProps {
+interface RecipeListItemProps {
   item: Recipe;
 }
 
-export function RecipeItem({ item }: RecipeItemProps) {
+export function RecipeListItem({ item }: RecipeListItemProps) {
   return (
     <View className="flex-row p-4 mb-3 bg-white rounded-2xl shadow-sm items-center border border-gray-100">
       {/* Recipe Image */}

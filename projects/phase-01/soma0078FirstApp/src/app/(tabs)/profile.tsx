@@ -95,7 +95,7 @@ function ProfileHeader() {
       {/* 프로필 이미지 */}
       <View style={styles.profileImgContainer}>
         <Image
-          source={require("../assets/images/duck.jpeg")}
+          source={require("@/assets/images/duck.jpeg")}
           style={styles.profileImg}
         />
       </View>
