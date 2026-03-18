@@ -3,9 +3,10 @@ import {
   View,
   Image,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
   Linking,
   ScrollView,
+  Platform,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
@@ -27,10 +28,16 @@ export default function ProfileScreen() {
       </View>
 
       <Text style={styles.nameText}>주승연</Text>
-      <TouchableOpacity onPress={openGithub} style={styles.githubBadge}>
+      <Pressable
+        onPress={openGithub}
+        style={({ pressed }) => [
+          styles.githubBadge,
+          pressed && { opacity: 0.7 },
+        ]}
+      >
         <FontAwesome name="github" size={14} color="#fff" />
         <Text style={styles.githubText}>@juseungyeon</Text>
-      </TouchableOpacity>
+      </Pressable>
 
       <Text style={styles.jobText}>Frontend Developer / RN Beginner</Text>
 
@@ -55,12 +62,18 @@ const styles = StyleSheet.create({
     padding: 8,
     backgroundColor: "#fff",
     borderRadius: 100,
-    elevation: 10,
-    shadowColor: "#C0ECAA",
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
     marginBottom: 20,
+    ...Platform.select({
+      ios: {
+        shadowColor: "#C0ECAA",
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+      },
+      android: {
+        elevation: 10,
+      },
+    }),
   },
   profileImage: {
     width: 140,

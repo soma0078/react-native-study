@@ -1,98 +1,101 @@
-import { View, Text, Image, ScrollView, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  StyleSheet,
+  Platform,
+  Pressable,
+} from "react-native";
+import { useRouter } from "expo-router";
 
 const PROJECTS = [
   {
-    id: 1,
+    id: "1",
     title: "프로필 카드 앱",
     description: "React Native로 만든 첫 번째 프로필 카드 UI",
     status: "완료",
   },
   {
-    id: 2,
+    id: "2",
     title: "리스트 화면 구현",
     description: "ScrollView를 활용한 리스트 레이아웃 연습",
     status: "완료",
   },
   {
-    id: 3,
+    id: "3",
     title: "탭 네비게이션",
     description: "Bottom Tab Navigator로 화면 전환 구현",
-    status: "진행 중",
+    status: "완료",
   },
   {
-    id: 4,
+    id: "4",
     title: "스타일링 심화",
     description: "Flexbox와 StyleSheet를 활용한 레이아웃 구성",
-    status: "예정",
+    status: "완료",
   },
 ];
 
 export default function HomeScreen() {
-  return (
-    <ScrollView
-      style={styles.scrollView}
-      contentContainerStyle={styles.scrollContent}
-      showsVerticalScrollIndicator={false}
-    >
-      <View style={styles.header}>
-        <Image
-          source={require("../../assets/images/my-profile.jpeg")}
-          style={styles.avatar}
-        />
-        <View style={styles.headerText}>
-          <Text style={styles.greeting}>안녕하세요 👋</Text>
-          <Text style={styles.name}>주승연</Text>
-          <Text style={styles.tagline}>Frontend Developer</Text>
-        </View>
-      </View>
+  const router = useRouter();
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Week 3-4 학습 내용</Text>
-        {PROJECTS.map((project) => (
-          <View key={project.id} style={styles.card}>
-            <View style={styles.cardHeader}>
-              <Text style={styles.cardTitle}>{project.title}</Text>
-              <View
-                style={[
-                  styles.statusBadge,
-                  project.status === "완료" && styles.statusDone,
-                  project.status === "진행 중" && styles.statusInProgress,
-                  project.status === "예정" && styles.statusPlanned,
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.statusText,
-                    project.status === "완료" && styles.statusTextDone,
-                    project.status === "진행 중" && styles.statusTextInProgress,
-                    project.status === "예정" && styles.statusTextPlanned,
-                  ]}
-                >
-                  {project.status}
-                </Text>
-              </View>
-            </View>
-            <Text style={styles.cardDescription}>{project.description}</Text>
+  return (
+    <FlatList
+      data={PROJECTS}
+      keyExtractor={(item) => item.id}
+      style={styles.list}
+      contentContainerStyle={styles.listContent}
+      showsVerticalScrollIndicator={false}
+      ListHeaderComponent={
+        <View style={styles.header}>
+          <Image
+            source={require("../../assets/images/my-profile.jpeg")}
+            style={styles.avatar}
+          />
+          <View style={styles.headerText}>
+            <Text style={styles.greeting}>안녕하세요 👋</Text>
+            <Text style={styles.name}>주승연</Text>
+            <Text style={styles.tagline}>Frontend Developer</Text>
           </View>
-        ))}
-      </View>
-    </ScrollView>
+        </View>
+      }
+      ListHeaderComponentStyle={styles.headerWrapper}
+      renderItem={({ item }) => (
+        <Pressable
+          onPress={() => router.push(`/detail/${item.id}` as any)}
+          style={({ pressed }) => [styles.card, pressed && { opacity: 0.7 }]}
+        >
+          <View style={styles.cardHeader}>
+            <Text style={styles.cardTitle}>{item.title}</Text>
+            <View style={[styles.statusBadge, styles.statusDone]}>
+              <Text style={[styles.statusText, styles.statusTextDone]}>
+                {item.status}
+              </Text>
+            </View>
+          </View>
+          <Text style={styles.cardDescription}>{item.description}</Text>
+          <Text style={styles.cardArrow}>자세히 보기 →</Text>
+        </Pressable>
+      )}
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
+  list: {
     flex: 1,
     backgroundColor: "#fefefe",
   },
-  scrollContent: {
+  listContent: {
     padding: 24,
     paddingBottom: 40,
+  },
+  headerWrapper: {
+    marginBottom: 24,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 32,
     padding: 20,
     backgroundColor: "#f8fafc",
     borderRadius: 16,
@@ -122,15 +125,6 @@ const styles = StyleSheet.create({
     color: "#475569",
     fontWeight: "500",
   },
-  section: {
-    marginBottom: 24,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "800",
-    color: "#030712",
-    marginBottom: 16,
-  },
   card: {
     padding: 16,
     backgroundColor: "#fff",
@@ -138,6 +132,17 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     borderWidth: 1,
     borderColor: "#e2e8f0",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#64748b",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.08,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
   },
   cardHeader: {
     flexDirection: "row",
@@ -159,12 +164,6 @@ const styles = StyleSheet.create({
   statusDone: {
     backgroundColor: "#dcfce7",
   },
-  statusInProgress: {
-    backgroundColor: "#dbeafe",
-  },
-  statusPlanned: {
-    backgroundColor: "#f1f5f9",
-  },
   statusText: {
     fontSize: 12,
     fontWeight: "600",
@@ -172,15 +171,15 @@ const styles = StyleSheet.create({
   statusTextDone: {
     color: "#16a34a",
   },
-  statusTextInProgress: {
-    color: "#2563eb",
-  },
-  statusTextPlanned: {
-    color: "#64748b",
-  },
   cardDescription: {
     fontSize: 14,
     color: "#64748b",
     lineHeight: 20,
+    marginBottom: 8,
+  },
+  cardArrow: {
+    fontSize: 13,
+    color: "#0f766e",
+    fontWeight: "600",
   },
 });
