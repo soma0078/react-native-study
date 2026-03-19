@@ -29,15 +29,27 @@ npm start
 
 ## 프로젝트 구조
 
-```
-app/
-├── _layout.tsx        # Root Stack Navigator
-├── +not-found.tsx     # 404 페이지
-└── (tabs)/
-    ├── _layout.tsx    # Bottom Tab Navigator
-    ├── index.tsx      # Home
-    ├── about.tsx      # About
-    └── profile.tsx    # Profile
+```text
+src/app
+ ├── _layout.tsx                          # 최상위 Stack 네비게이터
+ ├── +not-found.tsx                       # 404 페이지
+ │
+ └── (drawer)                             # Drawer (사이드바) 네비게이터
+      ├── _layout.tsx                     # Drawer 구성 및 설정
+      │
+      ├── (tabs)                          # Bottom Tabs 네비게이터
+      │    ├── _layout.tsx                # 하단 탭바 설정 (Home, Recipes, Profile)
+      │    ├── index.tsx                  # Home 탭
+      │    ├── profile.tsx                # Profile 탭
+      │    │
+      │    └── recipes                    # Recipes 관련 화면 (Stack)
+      │         ├── _layout.tsx           # Stack 네비게이터
+      │         ├── index.tsx             # 레시피 목록 화면
+      │         └── [id].tsx              # 특정 레시피 상세 화면 (동적 라우트)
+      │
+      └── settings                        # Settings 화면
+           ├── _layout.tsx                # Stack 네비게이터
+           └── index.tsx                  # 설정 메인 화면
 ```
 
 ## todo
