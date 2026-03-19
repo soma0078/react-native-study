@@ -46,6 +46,7 @@ export default function TabLayout() {
               color={color}
             />
           ),
+          // href: null, // 탭 바에서 숨기기
         }}
       />
       <Tabs.Screen
