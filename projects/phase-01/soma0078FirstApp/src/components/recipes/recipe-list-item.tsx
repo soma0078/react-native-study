@@ -10,7 +10,7 @@ export function RecipeListItem({ item }: RecipeListItemProps) {
   const router = useRouter();
 
   const handlePress = () => {
-    router.push(`/(contents)/recipe/${item.id}`);
+    router.push(`/recipes/${item.id}`);
   };
 
   return (
