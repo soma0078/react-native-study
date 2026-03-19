@@ -11,10 +11,10 @@ export default function TabLayout() {
         headerStyle: {
           backgroundColor: "lightgray",
         },
-        headerShadowVisible: false,
         tabBarStyle: {
           backgroundColor: "white",
         },
+        headerShown: false,
       }}
     >
       <Tabs.Screen
@@ -34,7 +34,7 @@ export default function TabLayout() {
         name="recipes"
         options={{
           title: "Recipes",
-          headerShown: false,
+
           tabBarIcon: ({ focused, color }) => (
             <MaterialCommunityIcons
               name={

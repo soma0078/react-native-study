@@ -76,6 +76,7 @@ export default function ProfileScreen() {
         );
       }}
       contentContainerStyle={styles.listContent}
+      showsVerticalScrollIndicator={false}
     />
   );
 }
