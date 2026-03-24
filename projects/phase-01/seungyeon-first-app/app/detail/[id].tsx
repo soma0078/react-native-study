@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const PROJECT_DETAILS: Record<
   string,
@@ -66,12 +67,16 @@ const PROJECT_DETAILS: Record<
 export default function DetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const project = PROJECT_DETAILS[id] ?? PROJECT_DETAILS["1"];
 
   return (
     <ScrollView
       style={styles.scrollView}
-      contentContainerStyle={styles.scrollContent}
+      contentContainerStyle={[
+        styles.scrollContent,
+        { paddingTop: insets.top + 16 },
+      ]}
       showsVerticalScrollIndicator={false}
     >
       <Pressable
@@ -100,8 +105,8 @@ export default function DetailScreen() {
       </View>
 
       <Text style={styles.sectionTitle}>배운 점</Text>
-      {project.learnings.map((item, index) => (
-        <View key={index} style={styles.learningItem}>
+      {project.learnings.map((item) => (
+        <View key={item} style={styles.learningItem}>
           <View style={styles.bullet} />
           <Text style={styles.learningText}>{item}</Text>
         </View>
@@ -117,7 +122,6 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 24,
-    paddingTop: Platform.OS === "ios" ? 60 : 24,
     paddingBottom: 40,
   },
   backButton: {

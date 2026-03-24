@@ -40,8 +40,8 @@ export default function AboutScreen() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>스킬</Text>
         <View style={styles.skillList}>
-          {SKILLS.map((skill, index) => (
-            <View key={index} style={styles.skillItem}>
+          {SKILLS.map((skill) => (
+            <View key={skill} style={styles.skillItem}>
               <Text style={styles.skillItemText}>{skill}</Text>
             </View>
           ))}
