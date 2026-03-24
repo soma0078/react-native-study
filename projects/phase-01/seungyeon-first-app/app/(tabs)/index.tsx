@@ -62,7 +62,12 @@ export default function HomeScreen() {
       ListHeaderComponentStyle={styles.headerWrapper}
       renderItem={({ item }) => (
         <Pressable
-          onPress={() => router.push(`/detail/${item.id}` as any)}
+          onPress={() =>
+            router.push({
+              pathname: "/detail/[id]",
+              params: { id: item.id },
+            })
+          }
           style={({ pressed }) => [styles.card, pressed && { opacity: 0.7 }]}
         >
           <View style={styles.cardHeader}>
