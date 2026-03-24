@@ -11,8 +11,18 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 
 export default function ProfileScreen() {
-  const openGithub = () => {
-    Linking.openURL("https://github.com/juseungyeon");
+  const openGithub = async () => {
+    const url = "https://github.com/juseungyeon";
+    try {
+      const supported = await Linking.canOpenURL(url);
+      if (supported) {
+        await Linking.openURL(url);
+      } else {
+        console.warn("Cannot open URL:", url);
+      }
+    } catch (error) {
+      console.error("Failed to open URL:", url, error);
+    }
   };
 
   return (
