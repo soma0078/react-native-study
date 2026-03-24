@@ -9,3 +9,4 @@
 
 1. 프로젝트 최상위 경로에 `.github/copilot-instructions.md` 파일 생성
 2. 내용 작성 : 해당 파일에 코드 리뷰 시 준수해야 할 규칙 작성
+   - [커스텀 지침 설정 참고](https://docs.github.com/ko/copilot/how-tos/configure-custom-instructions/add-repository-instructions)
