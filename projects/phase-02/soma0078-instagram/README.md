@@ -230,3 +230,12 @@ src/
 └── types/
     └── index.ts             # 공유 타입 정의
 ```
+
+## 스크린샷
+
+<div style={display:flex;}>
+<img width="350" alt="insta-0" src="./assets/insta-0.png" />
+<img width="350" alt="insta-1" src="./assets/insta-1.png" />
+<img width="350" alt="insta-2" src="./assets/insta-2.png" />
+<img width="350" alt="insta-3" src="./assets/insta-3.png" />
+</div>

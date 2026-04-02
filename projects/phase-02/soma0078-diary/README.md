@@ -319,3 +319,15 @@ src/
 └── types/
     └── index.ts             # DiaryEntry, WeatherType, MoodLevel
 ```
+
+## 스크린샷
+
+<div style={display:flex;}>
+<img width="350" alt="screenshot-0" src="./assets/screenshot-0.png" />
+<img width="350" alt="screenshot-1" src="./assets/screenshot-1.png" />
+<img width="350" alt="screenshot-2" src="./assets/screenshot-2.png" />
+<img width="350" alt="screenshot-3" src="./assets/screenshot-3.png" />
+<img width="350" alt="screenshot-4" src="./assets/screenshot-4.png" />
+<img width="350" alt="screenshot-5" src="./assets/screenshot-5.png" />
+<img width="350" alt="screenshot-6" src="./assets/screenshot-6.png" />
+</div>
