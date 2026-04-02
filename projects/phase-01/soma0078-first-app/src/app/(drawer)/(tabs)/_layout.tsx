@@ -11,10 +11,10 @@ export default function TabLayout() {
         headerStyle: {
           backgroundColor: "lightgray",
         },
-        headerShadowVisible: false,
         tabBarStyle: {
           backgroundColor: "white",
         },
+        headerShown: false,
       }}
     >
       <Tabs.Screen
@@ -31,9 +31,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="about"
+        name="recipes"
         options={{
-          title: "About",
+          title: "Recipes",
+
           tabBarIcon: ({ focused, color }) => (
             <MaterialCommunityIcons
               name={
@@ -45,12 +46,14 @@ export default function TabLayout() {
               color={color}
             />
           ),
+          // href: null, // 탭 바에서 숨기기
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: "Profile",
+          headerShown: false,
           tabBarIcon: ({ focused, color }) => (
             <FontAwesome
               name={focused ? "user-circle" : "user-circle-o"}
