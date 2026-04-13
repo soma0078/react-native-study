@@ -1,32 +1,16 @@
 import { Stack } from "expo-router";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useState,
-} from "react";
-import type { Mood, Weather, WriteFormState } from "@/types/diary";
+import { createContext, useCallback, useContext, useState } from "react";
+import type { WriteFormState } from "@/types/diary";
 
-const today = () => {
+const makeDefault = (): WriteFormState => {
   const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-};
-
-const defaultForm: WriteFormState = {
-  date: today(),
-  weather: null,
-  mood: null,
-  title: "",
-  content: "",
+  const date = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  return { date, weather: null, mood: null, title: "", content: "" };
 };
 
 interface WriteFormContextValue {
   form: WriteFormState;
-  setDate: (date: string) => void;
-  setWeather: (weather: Weather) => void;
-  setMood: (mood: Mood) => void;
-  setTitle: (title: string) => void;
-  setContent: (content: string) => void;
+  update: (patch: Partial<WriteFormState>) => void;
   resetForm: () => void;
 }
 
@@ -39,19 +23,16 @@ export function useWriteForm() {
 }
 
 export default function WriteLayout() {
-  const [form, setForm] = useState<WriteFormState>(defaultForm);
+  const [form, setForm] = useState<WriteFormState>(makeDefault);
 
-  const setDate = useCallback((date: string) => setForm((f) => ({ ...f, date })), []);
-  const setWeather = useCallback((weather: Weather) => setForm((f) => ({ ...f, weather })), []);
-  const setMood = useCallback((mood: Mood) => setForm((f) => ({ ...f, mood })), []);
-  const setTitle = useCallback((title: string) => setForm((f) => ({ ...f, title })), []);
-  const setContent = useCallback((content: string) => setForm((f) => ({ ...f, content })), []);
-  const resetForm = useCallback(() => setForm({ ...defaultForm, date: today() }), []);
+  const update = useCallback(
+    (patch: Partial<WriteFormState>) => setForm((f) => ({ ...f, ...patch })),
+    [],
+  );
+  const resetForm = useCallback(() => setForm(makeDefault()), []);
 
   return (
-    <WriteFormContext.Provider
-      value={{ form, setDate, setWeather, setMood, setTitle, setContent, resetForm }}
-    >
+    <WriteFormContext.Provider value={{ form, update, resetForm }}>
       <Stack screenOptions={{ headerShown: false, animation: "slide_from_right" }} />
     </WriteFormContext.Provider>
   );

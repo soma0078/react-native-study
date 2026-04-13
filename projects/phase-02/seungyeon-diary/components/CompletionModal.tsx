@@ -1,6 +1,13 @@
 import * as Haptics from "expo-haptics";
 import { useEffect, useRef } from "react";
-import { Animated, Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Animated,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { COLORS, RADIUS, SPACING } from "@/constants/theme";
 
 interface CompletionModalProps {
@@ -50,7 +57,11 @@ export function CompletionModal({
           <Text style={styles.subtitle}>오늘 하루도 수고했어요.</Text>
 
           <View style={styles.buttons}>
-            <ModalButton label="목록으로 가기" variant="outline" onPress={onGoList} />
+            <ModalButton
+              label="목록으로 가기"
+              variant="outline"
+              onPress={onGoList}
+            />
             <ModalButton
               label="작성한 일기 보기"
               variant="primary"

@@ -16,7 +16,14 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { COLORS, MOOD_OPTIONS, RADIUS, SPACING, WEATHER_OPTIONS } from "@/constants/theme";
+import { DatePickerField } from "@/components/DatePickerField";
+import {
+  COLORS,
+  MOOD_OPTIONS,
+  RADIUS,
+  SPACING,
+  WEATHER_OPTIONS,
+} from "@/constants/theme";
 import { useDiaries } from "@/hooks/useDiaries";
 import type { Mood, Weather } from "@/types/diary";
 
@@ -28,6 +35,7 @@ export default function Detail() {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState("");
   const [editContent, setEditContent] = useState("");
+  const [editDate, setEditDate] = useState("");
   const [editWeather, setEditWeather] = useState<Weather | null>(null);
   const [editMood, setEditMood] = useState<Mood | null>(null);
 
@@ -69,6 +77,7 @@ export default function Detail() {
 
   const handleEditStart = () => {
     if (!entry) return;
+    setEditDate(entry.date);
     setEditTitle(entry.title);
     setEditContent(entry.content);
     setEditWeather(entry.weather);
@@ -86,6 +95,7 @@ export default function Detail() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     await save({
       ...entry,
+      date: editDate,
       title: trimmedTitle,
       content: trimmedContent,
       weather: editWeather,
@@ -125,8 +135,7 @@ export default function Detail() {
   const days = ["일", "월", "화", "수", "목", "금", "토"];
   const dayOfWeek = days[dateObj.getDay()];
 
-  const isValid =
-    editTitle.trim().length > 0 && editContent.trim().length > 0;
+  const isValid = editTitle.trim().length > 0 && editContent.trim().length > 0;
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -184,13 +193,20 @@ export default function Detail() {
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
           >
-            <View style={styles.dateRow}>
-              <Text style={styles.date}>{formattedDate}</Text>
-              <Text style={styles.dayOfWeek}>{dayOfWeek}요일</Text>
-            </View>
+            {!isEditing && (
+              <View style={styles.dateRow}>
+                <Text style={styles.date}>{formattedDate}</Text>
+                <Text style={styles.dayOfWeek}>{dayOfWeek}요일</Text>
+              </View>
+            )}
 
             {isEditing ? (
               <>
+                <View style={styles.sectionLabel}>
+                  <Text style={styles.sectionLabelText}>날짜</Text>
+                </View>
+                <DatePickerField value={editDate} onChange={setEditDate} />
+
                 <View style={styles.sectionLabel}>
                   <Text style={styles.sectionLabelText}>날씨</Text>
                 </View>
@@ -293,7 +309,9 @@ export default function Detail() {
                   textAlignVertical="top"
                   maxLength={2000}
                 />
-                <Text style={styles.charCount}>{editContent.length} / 2000</Text>
+                <Text style={styles.charCount}>
+                  {editContent.length} / 2000
+                </Text>
               </View>
             ) : (
               <>

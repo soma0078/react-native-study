@@ -10,14 +10,21 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { DatePickerField } from "@/components/DatePickerField";
 import { MoodSelector } from "@/components/MoodSelector";
 import { ProgressBar } from "@/components/ProgressBar";
 import { WeatherSelector } from "@/components/WeatherSelector";
-import { COLORS, MOOD_OPTIONS, RADIUS, SPACING, WEATHER_OPTIONS } from "@/constants/theme";
+import {
+  COLORS,
+  MOOD_OPTIONS,
+  RADIUS,
+  SPACING,
+  WEATHER_OPTIONS,
+} from "@/constants/theme";
 import { useWriteForm } from "./_layout";
 
 export default function Step1() {
-  const { form, setWeather, setMood } = useWriteForm();
+  const { form, update } = useWriteForm();
   const isValid = form.weather !== null && form.mood !== null;
 
   const nextScale = useRef(new Animated.Value(1)).current;
@@ -52,10 +59,9 @@ export default function Step1() {
     router.back();
   };
 
-  const dateObj = new Date(form.date);
-  const displayDate = `${dateObj.getFullYear()}년 ${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`;
-
-  const weatherLabel = WEATHER_OPTIONS.find((w) => w.value === form.weather)?.label;
+  const weatherLabel = WEATHER_OPTIONS.find(
+    (w) => w.value === form.weather,
+  )?.label;
   const moodLabel = MOOD_OPTIONS.find((m) => m.value === form.mood)?.label;
 
   return (
@@ -77,9 +83,7 @@ export default function Step1() {
       >
         <View style={styles.section}>
           <Text style={styles.sectionLabel}>📅 날짜</Text>
-          <View style={styles.dateChip}>
-            <Text style={styles.dateText}>{displayDate}</Text>
-          </View>
+          <DatePickerField value={form.date} onChange={(date) => update({ date })} />
         </View>
 
         <View style={styles.section}>
@@ -89,7 +93,7 @@ export default function Step1() {
               <Text style={styles.selectedHint}> — {weatherLabel}</Text>
             )}
           </Text>
-          <WeatherSelector value={form.weather} onChange={setWeather} />
+          <WeatherSelector value={form.weather} onChange={(weather) => update({ weather })} />
         </View>
 
         <View style={styles.section}>
@@ -99,13 +103,16 @@ export default function Step1() {
               <Text style={styles.selectedHint}> — {moodLabel}</Text>
             )}
           </Text>
-          <MoodSelector value={form.mood} onChange={setMood} />
+          <MoodSelector value={form.mood} onChange={(mood) => update({ mood })} />
         </View>
       </ScrollView>
 
       <View style={styles.footer}>
         <Animated.View
-          style={[styles.nextButtonWrapper, { transform: [{ scale: nextScale }] }]}
+          style={[
+            styles.nextButtonWrapper,
+            { transform: [{ scale: nextScale }] },
+          ]}
         >
           <Pressable
             onPress={handleNext}
@@ -175,18 +182,6 @@ const styles = StyleSheet.create({
   selectedHint: {
     fontSize: 14,
     fontWeight: "500",
-    color: COLORS.primary,
-  },
-  dateChip: {
-    alignSelf: "flex-start",
-    backgroundColor: COLORS.primaryLight,
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
-    borderRadius: RADIUS.full,
-  },
-  dateText: {
-    fontSize: 15,
-    fontWeight: "600",
     color: COLORS.primary,
   },
   footer: {

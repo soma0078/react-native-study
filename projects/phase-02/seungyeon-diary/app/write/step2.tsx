@@ -23,7 +23,7 @@ import type { DiaryEntry } from "@/types/diary";
 import { useWriteForm } from "./_layout";
 
 export default function Step2() {
-  const { form, setTitle, setContent, resetForm } = useWriteForm();
+  const { form, update, resetForm } = useWriteForm();
   const { save } = useDiaries();
   const [modalVisible, setModalVisible] = useState(false);
   const [savedId, setSavedId] = useState<string | null>(null);
@@ -122,7 +122,7 @@ export default function Step2() {
               <TextInput
                 style={styles.titleInput}
                 value={form.title}
-                onChangeText={setTitle}
+                onChangeText={(title) => update({ title })}
                 placeholder="오늘 하루를 한 줄로 표현한다면?"
                 placeholderTextColor={COLORS.textMuted}
                 maxLength={60}
@@ -136,7 +136,7 @@ export default function Step2() {
               <TextInput
                 style={styles.contentInput}
                 value={form.content}
-                onChangeText={setContent}
+                onChangeText={(content) => update({ content })}
                 placeholder="오늘 있었던 일을 자유롭게 적어보세요."
                 placeholderTextColor={COLORS.textMuted}
                 multiline
