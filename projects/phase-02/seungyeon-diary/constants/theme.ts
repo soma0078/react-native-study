@@ -16,7 +16,11 @@ export const COLORS = {
   disabled: "#D1D5DB",
 };
 
-export const WEATHER_OPTIONS: { value: Weather; icon: string; label: string }[] = [
+export const WEATHER_OPTIONS: {
+  value: Weather;
+  icon: string;
+  label: string;
+}[] = [
   { value: "sunny", icon: "☀️", label: "맑음" },
   { value: "cloudy", icon: "☁️", label: "흐림" },
   { value: "rainy", icon: "🌧️", label: "비" },

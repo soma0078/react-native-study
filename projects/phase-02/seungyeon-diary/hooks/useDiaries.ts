@@ -47,7 +47,7 @@ export function useDiaries() {
 
   const getById = useCallback(
     (id: string) => diaries.find((e) => e.id === id) ?? null,
-    [diaries]
+    [diaries],
   );
 
   return { diaries, loading, save, remove, getById, refresh };
