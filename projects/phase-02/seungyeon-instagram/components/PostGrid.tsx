@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import {
   Animated,
   FlatList,
@@ -77,6 +77,20 @@ export default function PostGrid({ tab, data }: Props) {
   const { width } = useWindowDimensions();
   const itemSize = (width - 2) / 3;
 
+  const renderPostItem = useCallback(
+    ({ item }: { item: Post }) => (
+      <DoubleTapImage style={{ width: itemSize, height: itemSize }}>
+        <Image source={{ uri: item.imageUrl }} style={styles.image} />
+        {tab === "tagged" && (
+          <View style={styles.tagBadge}>
+            <Ionicons name="pricetag" size={10} color="#fff" />
+          </View>
+        )}
+      </DoubleTapImage>
+    ),
+    [itemSize, tab]
+  );
+
   if (tab === "reels") {
     return <ReelsGrid itemSize={itemSize} />;
   }
@@ -87,42 +101,42 @@ export default function PostGrid({ tab, data }: Props) {
       keyExtractor={(item) => item.id}
       numColumns={3}
       scrollEnabled={false}
-      renderItem={({ item }) => (
-        <DoubleTapImage style={{ width: itemSize, height: itemSize }}>
-          <Image source={{ uri: item.imageUrl }} style={styles.image} />
-          {tab === "tagged" && (
-            <View style={styles.tagBadge}>
-              <Ionicons name="pricetag" size={10} color="#fff" />
-            </View>
-          )}
-        </DoubleTapImage>
-      )}
-      ItemSeparatorComponent={() => <View style={{ height: 1 }} />}
+      renderItem={renderPostItem}
+      ItemSeparatorComponent={RowSeparator}
       columnWrapperStyle={{ gap: 1 }}
     />
   );
 }
 
 function ReelsGrid({ itemSize }: { itemSize: number }) {
+  const renderReelItem = useCallback(
+    ({ item }: { item: (typeof REELS)[number] }) => (
+      <DoubleTapImage style={{ width: itemSize, height: itemSize * 1.5 }}>
+        <Image source={{ uri: item.imageUrl }} style={styles.image} />
+        <View style={styles.reelOverlay}>
+          <Ionicons name="play" size={16} color="#fff" />
+          <Text style={styles.reelViews}>{item.views}</Text>
+        </View>
+      </DoubleTapImage>
+    ),
+    [itemSize]
+  );
+
   return (
     <FlatList
       data={REELS}
       keyExtractor={(item) => item.id}
       numColumns={3}
       scrollEnabled={false}
-      renderItem={({ item }) => (
-        <DoubleTapImage style={{ width: itemSize, height: itemSize * 1.5 }}>
-          <Image source={{ uri: item.imageUrl }} style={styles.image} />
-          <View style={styles.reelOverlay}>
-            <Ionicons name="play" size={16} color="#fff" />
-            <Text style={styles.reelViews}>{item.views}</Text>
-          </View>
-        </DoubleTapImage>
-      )}
-      ItemSeparatorComponent={() => <View style={{ height: 1 }} />}
+      renderItem={renderReelItem}
+      ItemSeparatorComponent={RowSeparator}
       columnWrapperStyle={{ gap: 1 }}
     />
   );
+}
+
+function RowSeparator() {
+  return <View style={{ height: 1 }} />;
 }
 
 const styles = StyleSheet.create({
