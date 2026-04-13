@@ -1,50 +1,99 @@
-# Welcome to your Expo app 👋
+# seungyeon-diary
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+React Native(Expo)로 만든 감정 일기 앱입니다.  
+날씨·기분을 기록하고, 하루를 글로 남길 수 있습니다.
 
-## Get started
+---
 
-1. Install dependencies
+## 화면 구성
 
-   ```bash
-   npm install
-   ```
+| 화면 | 경로 | 설명 |
+|------|------|------|
+| 일기 목록 | `/` | 작성한 일기 카드 리스트, FAB 버튼으로 작성 시작 |
+| 작성 1단계 | `/write/step1` | 날짜 · 날씨 · 기분 선택 |
+| 작성 2단계 | `/write/step2` | 제목 · 본문 입력 후 저장 |
+| 일기 상세 | `/detail/[id]` | 일기 조회 · 수정 · 삭제 |
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
+## 주요 기능
 
-In the output, you'll find options to open the app in a
+- **2단계 작성 흐름** — 기본 정보(날씨·기분) → 본문 작성 순서로 진행
+- **일기 수정** — 상세 화면에서 모든 필드 인라인 편집
+- **일기 삭제** — 목록 카드 스와이프 or 상세 화면에서 삭제
+- **로컬 저장** — `AsyncStorage`로 기기에 영구 저장
+- **햅틱 피드백** — 주요 인터랙션에 진동 피드백
+- **완료 모달** — 저장 후 목록/상세로 이동 선택
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 프로젝트 구조
 
-## Get a fresh project
+```
+app/
+├── _layout.tsx          # 루트 스택 레이아웃
+├── index.tsx            # 일기 목록 (홈)
+├── write/
+│   ├── _layout.tsx      # 작성 폼 Context Provider
+│   ├── step1.tsx        # 날짜·날씨·기분 선택
+│   └── step2.tsx        # 제목·본문 입력
+└── detail/
+    └── [id].tsx         # 일기 상세·수정·삭제
 
-When you're ready, run:
+components/
+├── DiaryCard.tsx        # 목록 카드
+├── EmptyState.tsx       # 일기 없을 때 빈 화면
+├── MoodSelector.tsx     # 기분 선택 (1~5)
+├── WeatherSelector.tsx  # 날씨 선택
+├── DatePickerField.tsx  # 날짜 선택
+├── ProgressBar.tsx      # 작성 단계 진행 표시
+└── CompletionModal.tsx  # 저장 완료 모달
 
-```bash
-npm run reset-project
+hooks/
+└── useDiaries.ts        # 일기 CRUD + AsyncStorage
+
+types/
+└── diary.ts             # DiaryEntry, WriteFormState 타입 정의
+
+constants/
+└── theme.ts             # 색상, 간격, 날씨·기분 옵션 상수
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## 데이터 타입
 
-To learn more about developing your project with Expo, look at the following resources:
+```ts
+type Weather = "sunny" | "cloudy" | "rainy" | "snowy" | "windy";
+type Mood = 1 | 2 | 3 | 4 | 5;
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+interface DiaryEntry {
+  id: string;
+  date: string;       // 'YYYY-MM-DD'
+  weather: Weather;
+  mood: Mood;
+  title: string;
+  content: string;
+  createdAt: number;  // Date.now()
+}
+```
 
-## Join the community
+---
 
-Join our community of developers creating universal apps.
+## 시작하기
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+npm install
+npx expo start
+```
+
+---
+
+## 기술 스택
+
+- **React Native** 0.81 / **React** 19
+- **Expo** ~54 / **Expo Router** ~6
+- **TypeScript** ~5.9
+- **AsyncStorage** — 로컬 데이터 영구 저장
+- **expo-haptics** — 햅틱 피드백
+- **@react-native-community/datetimepicker** — 날짜 선택
