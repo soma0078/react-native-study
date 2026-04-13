@@ -1,14 +1,21 @@
 import * as Haptics from "expo-haptics";
-import { useRef } from "react";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+} from "react-native-reanimated";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import {
-  Animated,
-  PanResponder,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import { COLORS, MOOD_OPTIONS, RADIUS, SPACING, WEATHER_OPTIONS } from "@/constants/theme";
+  COLORS,
+  MOOD_OPTIONS,
+  RADIUS,
+  SPACING,
+  WEATHER_OPTIONS,
+} from "@/constants/theme";
 import type { DiaryEntry } from "@/types/diary";
 
 interface DiaryCardProps {
@@ -17,61 +24,50 @@ interface DiaryCardProps {
   onDelete: () => void;
 }
 
-const DELETE_THRESHOLD = -80;
-const SWIPE_LIMIT = -100;
+const DELETE_THRESHOLD = -90;
+const SWIPE_LIMIT = -90;
 
 export function DiaryCard({ entry, onPress, onDelete }: DiaryCardProps) {
-  const translateX = useRef(new Animated.Value(0)).current;
-  const pressScale = useRef(new Animated.Value(1)).current;
-  const deleteOpacity = translateX.interpolate({
-    inputRange: [SWIPE_LIMIT, DELETE_THRESHOLD, 0],
-    outputRange: [1, 0.6, 0],
-    extrapolate: "clamp",
-  });
+  const translateX = useSharedValue(0);
+  const pressScale = useSharedValue(1);
 
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: (_, gestureState) =>
-        Math.abs(gestureState.dx) > 8 && Math.abs(gestureState.dy) < 20,
-      onPanResponderMove: (_, gestureState) => {
-        const clamped = Math.max(SWIPE_LIMIT, Math.min(0, gestureState.dx));
-        translateX.setValue(clamped);
-      },
-      onPanResponderRelease: (_, gestureState) => {
-        if (gestureState.dx < DELETE_THRESHOLD) {
-          Animated.timing(translateX, {
-            toValue: SWIPE_LIMIT,
-            duration: 150,
-            useNativeDriver: true,
-          }).start();
-        } else {
-          Animated.spring(translateX, {
-            toValue: 0,
-            useNativeDriver: true,
-            tension: 100,
-            friction: 10,
-          }).start();
-        }
-      },
+  const panGesture = Gesture.Pan()
+    .activeOffsetX([-10, 10])
+    .failOffsetY([-8, 8])
+    .onUpdate((event) => {
+      translateX.value = Math.max(SWIPE_LIMIT, Math.min(0, event.translationX));
     })
-  ).current;
+    .onEnd((event) => {
+      if (event.translationX < DELETE_THRESHOLD) {
+        translateX.value = withTiming(SWIPE_LIMIT, { duration: 200 });
+      } else {
+        translateX.value = withSpring(0, {
+          damping: 20,
+          stiffness: 200,
+          mass: 0.5,
+        });
+      }
+    });
+
+  const cardStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: translateX.value }, { scale: pressScale.value }],
+  }));
+
+  const deleteAreaStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(
+      translateX.value,
+      [SWIPE_LIMIT, -30, 0],
+      [1, 0.5, 0],
+      Extrapolation.CLAMP,
+    ),
+  }));
 
   const handlePressIn = () => {
-    Animated.spring(pressScale, {
-      toValue: 0.97,
-      useNativeDriver: true,
-      tension: 200,
-      friction: 10,
-    }).start();
+    pressScale.value = withSpring(0.97, { damping: 20, stiffness: 300 });
   };
 
   const handlePressOut = () => {
-    Animated.spring(pressScale, {
-      toValue: 1,
-      useNativeDriver: true,
-      tension: 200,
-      friction: 10,
-    }).start();
+    pressScale.value = withSpring(1, { damping: 20, stiffness: 300 });
   };
 
   const handlePress = () => {
@@ -81,11 +77,8 @@ export function DiaryCard({ entry, onPress, onDelete }: DiaryCardProps) {
 
   const handleDelete = () => {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
-    Animated.timing(translateX, {
-      toValue: -400,
-      duration: 200,
-      useNativeDriver: true,
-    }).start(onDelete);
+    translateX.value = withTiming(-500, { duration: 250 });
+    setTimeout(onDelete, 260);
   };
 
   const weatherInfo = WEATHER_OPTIONS.find((w) => w.value === entry.weather);
@@ -96,41 +89,40 @@ export function DiaryCard({ entry, onPress, onDelete }: DiaryCardProps) {
 
   return (
     <View style={styles.wrapper}>
-      <Animated.View style={[styles.deleteArea, { opacity: deleteOpacity }]}>
+      <Animated.View style={[styles.deleteArea, deleteAreaStyle]}>
         <Pressable style={styles.deleteButton} onPress={handleDelete}>
           <Text style={styles.deleteText}>삭제</Text>
         </Pressable>
       </Animated.View>
 
-      <Animated.View
-        style={{ transform: [{ translateX }, { scale: pressScale }] }}
-        {...panResponder.panHandlers}
-      >
-        <Pressable
-          onPress={handlePress}
-          onPressIn={handlePressIn}
-          onPressOut={handlePressOut}
-          style={styles.card}
-        >
-          <View style={styles.header}>
-            <Text style={styles.date}>{formattedDate}</Text>
-            <View style={styles.badges}>
-              <View style={styles.badge}>
-                <Text style={styles.badgeIcon}>{weatherInfo?.icon}</Text>
-              </View>
-              <View style={styles.badge}>
-                <Text style={styles.badgeIcon}>{moodInfo?.icon}</Text>
+      <GestureDetector gesture={panGesture}>
+        <Animated.View style={cardStyle}>
+          <Pressable
+            onPress={handlePress}
+            onPressIn={handlePressIn}
+            onPressOut={handlePressOut}
+            style={styles.card}
+          >
+            <View style={styles.header}>
+              <Text style={styles.date}>{formattedDate}</Text>
+              <View style={styles.badges}>
+                <View style={styles.badge}>
+                  <Text style={styles.badgeIcon}>{weatherInfo?.icon}</Text>
+                </View>
+                <View style={styles.badge}>
+                  <Text style={styles.badgeIcon}>{moodInfo?.icon}</Text>
+                </View>
               </View>
             </View>
-          </View>
-          <Text style={styles.title} numberOfLines={1}>
-            {entry.title}
-          </Text>
-          <Text style={styles.content} numberOfLines={2}>
-            {entry.content}
-          </Text>
-        </Pressable>
-      </Animated.View>
+            <Text style={styles.title} numberOfLines={1}>
+              {entry.title}
+            </Text>
+            <Text style={styles.content} numberOfLines={2}>
+              {entry.content}
+            </Text>
+          </Pressable>
+        </Animated.View>
+      </GestureDetector>
     </View>
   );
 }
@@ -146,11 +138,10 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     justifyContent: "center",
-    alignItems: "flex-end",
-    paddingRight: SPACING.md,
+    alignItems: "center",
     borderRadius: RADIUS.lg,
     backgroundColor: COLORS.danger,
-    minWidth: 100,
+    width: 80,
   },
   deleteButton: {
     paddingHorizontal: SPACING.md,

@@ -81,7 +81,7 @@ export function WeatherSelector({ value, onChange }: WeatherSelectorProps) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    gap: SPACING.sm,
+    gap: SPACING.xs,
     flexWrap: "wrap",
     justifyContent: "center",
   },
@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: COLORS.border,
     backgroundColor: COLORS.surface,
+    minWidth: 60,
   },
   itemSelected: {
     borderColor: COLORS.primary,
