@@ -79,18 +79,14 @@ export default function Step2() {
   const handleGoList = () => {
     setModalVisible(false);
     resetForm();
-    router.navigate("/");
+    router.replace("/");
   };
 
   const handleViewDiary = () => {
     setModalVisible(false);
     resetForm();
     if (savedId) {
-      const id = savedId;
-      router.navigate("/");
-      requestAnimationFrame(() => {
-        router.push(`/detail/${id}`);
-      });
+      router.replace(`/detail/${savedId}`);
     }
   };
 
