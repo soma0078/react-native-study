@@ -121,6 +121,11 @@ export function useWeather() {
   const apiKey = process.env.EXPO_PUBLIC_WEATHER_SERVICE_API_KEY ?? "";
 
   const load = useCallback(async () => {
+    if (!apiKey) {
+      setError("날씨 API 키가 설정되지 않았어요.\n.env.local 파일을 확인해주세요.");
+      setState("error");
+      return;
+    }
     setState("loading");
     setError(null);
     try {

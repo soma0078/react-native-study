@@ -1,5 +1,11 @@
 import { Activity } from "@/types/activity";
 
+export function getScoreColor(score: number): string {
+  if (score >= 80) return "#4caf50";
+  if (score >= 60) return "#ff9800";
+  return "#f44336";
+}
+
 export const ALL_ACTIVITIES: Activity[] = [
   {
     id: "1",

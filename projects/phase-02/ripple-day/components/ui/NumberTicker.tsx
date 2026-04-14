@@ -19,25 +19,26 @@ export function NumberTicker({
   shouldAnimate = true,
 }: NumberTickerProps) {
   const animatedValue = useRef(new Animated.Value(0)).current;
-  const displayValue = useRef(0);
+
+  const [displayText, setDisplayText] = React.useState(
+    shouldAnimate ? "0" + suffix : value.toFixed(decimalPlaces) + suffix,
+  );
 
   useEffect(() => {
-    if (!shouldAnimate) return;
+    if (!shouldAnimate) {
+      setDisplayText(value.toFixed(decimalPlaces) + suffix);
+      return;
+    }
     animatedValue.setValue(0);
     Animated.timing(animatedValue, {
       toValue: value,
       duration,
       useNativeDriver: false,
     }).start();
-  }, [value, duration, animatedValue, shouldAnimate]);
-
-  const [displayText, setDisplayText] = React.useState(
-    value.toFixed(decimalPlaces) + suffix,
-  );
+  }, [value, duration, animatedValue, shouldAnimate, decimalPlaces, suffix]);
 
   useEffect(() => {
     const listener = animatedValue.addListener(({ value: v }) => {
-      displayValue.current = v;
       setDisplayText(v.toFixed(decimalPlaces) + suffix);
     });
     return () => animatedValue.removeListener(listener);

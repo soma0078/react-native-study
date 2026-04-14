@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { Activity, ChecklistItem } from "@/types/activity";
+import { getScoreColor } from "@/constants/activities";
 
 interface ActivityBottomSheetProps {
   activity: Activity | null;
@@ -42,10 +43,9 @@ export function ActivityBottomSheet({
       bottomSheetRef.current?.expand();
 
       // 준비물 순차 애니메이션
-      const animations = itemAnimations.current.map((anim, i) =>
+      const animations = itemAnimations.current.map((anim) =>
         Animated.spring(anim, {
           toValue: 1,
-          delay: i * 120,
           useNativeDriver: true,
           tension: 200,
           friction: 12,
@@ -173,12 +173,6 @@ export function ActivityBottomSheet({
       </BottomSheetScrollView>
     </BottomSheet>
   );
-}
-
-function getScoreColor(score: number): string {
-  if (score >= 80) return "#4caf50";
-  if (score >= 60) return "#ff9800";
-  return "#f44336";
 }
 
 const styles = StyleSheet.create({

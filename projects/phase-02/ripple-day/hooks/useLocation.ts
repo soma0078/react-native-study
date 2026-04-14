@@ -9,14 +9,19 @@ export function useLocation() {
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
-    Location.getForegroundPermissionsAsync().then(({ status }) => {
-      if (status === "granted") {
-        setPermissionStatus("granted");
-      } else if (status === "denied") {
+    Location.getForegroundPermissionsAsync()
+      .then(({ status }) => {
+        if (status === "granted") {
+          setPermissionStatus("granted");
+        } else if (status === "denied") {
+          setPermissionStatus("denied");
+        }
+        setIsChecking(false);
+      })
+      .catch(() => {
         setPermissionStatus("denied");
-      }
-      setIsChecking(false);
-    });
+        setIsChecking(false);
+      });
   }, []);
 
   const requestPermission = async (): Promise<boolean> => {

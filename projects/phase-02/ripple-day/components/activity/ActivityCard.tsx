@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import { Activity } from "@/types/activity";
+import { getScoreColor } from "@/constants/activities";
 
 interface ActivityCardProps {
   activity: Activity;
@@ -71,9 +72,13 @@ export function ActivityCard({ activity, onPress }: ActivityCardProps) {
           styles.card,
           {
             transform: [
+              { perspective: 800 },
               { scale },
               {
-                perspective: 800,
+                rotateY: rotateY.interpolate({
+                  inputRange: [-3, 3],
+                  outputRange: ["-45deg", "45deg"],
+                }),
               },
             ],
           },
@@ -99,12 +104,6 @@ export function ActivityCard({ activity, onPress }: ActivityCardProps) {
       </Animated.View>
     </Pressable>
   );
-}
-
-function getScoreColor(score: number): string {
-  if (score >= 80) return "#4caf50";
-  if (score >= 60) return "#ff9800";
-  return "#f44336";
 }
 
 const styles = StyleSheet.create({
