@@ -6,7 +6,6 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ActivityIndicator,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import * as SplashScreen from "expo-splash-screen";
@@ -19,6 +18,7 @@ import { WeatherSection } from "@/components/weather/WeatherSection";
 import { ActivityList } from "@/components/activity/ActivityList";
 import { ActivityBottomSheet } from "@/components/activity/ActivityBottomSheet";
 import { WaveEffect } from "@/components/ui/WaveEffect";
+import { SplashScreenView } from "@/components/ui/SplashScreenView";
 import { Activity } from "@/types/activity";
 
 SplashScreen.preventAutoHideAsync();
@@ -30,6 +30,9 @@ export default function HomeScreen() {
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(
     null,
   );
+  const [showSplash, setShowSplash] = useState(true);
+  const [dataReady, setDataReady] = useState(false);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   // 권한 체크 후 온보딩 라우팅
@@ -39,18 +42,28 @@ export default function HomeScreen() {
     }
   }, [isChecking, permissionStatus]);
 
-  // 앱 준비 완료 시 Splash 숨기기 + 페이드인
+  // 데이터 준비 감지
   useEffect(() => {
     if (state === "success" || state === "error") {
-      SplashScreen.hideAsync().then(() => {
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 600,
-          useNativeDriver: true,
-        }).start();
-      });
+      setDataReady(true);
     }
-  }, [state, fadeAnim]);
+  }, [state]);
+
+  // 네이티브 스플래시 숨기기 (커스텀 스플래시로 전환)
+  useEffect(() => {
+    SplashScreen.hideAsync();
+  }, []);
+
+  // 커스텀 스플래시 종료 후 콘텐츠 페이드인 + 숫자 애니메이션 시작
+  const handleSplashFinish = useCallback(() => {
+    setShowSplash(false);
+    setShouldAnimate(true);
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  }, [fadeAnim]);
 
   const gradientConfig = weather
     ? getGradientConfig(weather.skyCondition, weather.precipitationType)
@@ -75,65 +88,58 @@ export default function HomeScreen() {
     setSelectedActivity(null);
   }, []);
 
-  if (state === "loading" || state === "idle") {
-    return (
-      <LinearGradient
-        colors={["#0a1628", "#1565c0"]}
-        style={styles.loadingContainer}
-      >
-        <ActivityIndicator size="large" color="rgba(255,255,255,0.8)" />
-        <Text style={styles.loadingText}>날씨 정보를 불러오는 중...</Text>
-      </LinearGradient>
-    );
-  }
-
-  if (state === "error") {
-    return (
-      <LinearGradient
-        colors={["#0a1628", "#1c2a3a"]}
-        style={styles.loadingContainer}
-      >
-        <Text style={styles.errorEmoji}>🌥</Text>
-        <Text style={styles.errorText}>{error}</Text>
-        <TouchableOpacity style={styles.retryButton} onPress={reload}>
-          <Text style={styles.retryText}>다시 시도</Text>
-        </TouchableOpacity>
-      </LinearGradient>
-    );
-  }
-
   return (
     <View style={styles.root}>
+      {/* 메인 콘텐츠 */}
       <Animated.View style={[styles.root, { opacity: fadeAnim }]}>
-        <LinearGradient
-          colors={gradientConfig.colors as [string, string, ...string[]]}
-          start={gradientConfig.start}
-          end={gradientConfig.end}
-          style={styles.root}
-        >
-          <ScrollView
-            style={styles.scroll}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scrollContent}
+        {state === "error" ? (
+          <LinearGradient
+            colors={["#0a1628", "#1c2a3a"]}
+            style={styles.errorContainer}
           >
-            {/* 날씨 섹션 */}
-            {weather && (
-              <WeatherSection weather={weather} waterQuality={waterQuality} />
-            )}
-
-            {/* 활동 추천 섹션 */}
-            <ActivityList
-              activities={activities}
-              onActivityPress={handleActivityPress}
-            />
-
-            <View style={styles.bottomPadding} />
-          </ScrollView>
-
-          {/* 물결 효과 */}
-          <WaveEffect />
-        </LinearGradient>
+            <Text style={styles.errorEmoji}>🌥</Text>
+            <Text style={styles.errorText}>{error}</Text>
+            <TouchableOpacity style={styles.retryButton} onPress={reload}>
+              <Text style={styles.retryText}>다시 시도</Text>
+            </TouchableOpacity>
+          </LinearGradient>
+        ) : (
+          <LinearGradient
+            colors={gradientConfig.colors as [string, string, ...string[]]}
+            start={gradientConfig.start}
+            end={gradientConfig.end}
+            style={styles.root}
+          >
+            <ScrollView
+              style={styles.scroll}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.scrollContent}
+            >
+              {weather && (
+                <WeatherSection
+                  weather={weather}
+                  waterQuality={waterQuality}
+                  shouldAnimate={shouldAnimate}
+                />
+              )}
+              <ActivityList
+                activities={activities}
+                onActivityPress={handleActivityPress}
+              />
+              <View style={styles.bottomPadding} />
+            </ScrollView>
+            <WaveEffect />
+          </LinearGradient>
+        )}
       </Animated.View>
+
+      {/* 커스텀 스플래시 스크린 */}
+      {showSplash && (
+        <SplashScreenView
+          dataReady={dataReady}
+          onFinish={handleSplashFinish}
+        />
+      )}
 
       {/* 활동 상세 Bottom Sheet */}
       <ActivityBottomSheet
@@ -157,15 +163,11 @@ const styles = StyleSheet.create({
   bottomPadding: {
     height: 120,
   },
-  loadingContainer: {
+  errorContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     gap: 16,
-  },
-  loadingText: {
-    fontSize: 16,
-    color: "rgba(255,255,255,0.7)",
   },
   errorEmoji: {
     fontSize: 60,

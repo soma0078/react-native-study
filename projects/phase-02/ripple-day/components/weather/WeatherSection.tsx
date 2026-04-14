@@ -7,9 +7,10 @@ import { NumberTicker } from "@/components/ui/NumberTicker";
 interface WeatherSectionProps {
   weather: WeatherData;
   waterQuality: WaterQualityData | null;
+  shouldAnimate?: boolean;
 }
 
-export function WeatherSection({ weather, waterQuality }: WeatherSectionProps) {
+export function WeatherSection({ weather, waterQuality, shouldAnimate = true }: WeatherSectionProps) {
   const mood = getMoodByTemperature(weather.temperature);
 
   return (
@@ -28,6 +29,7 @@ export function WeatherSection({ weather, waterQuality }: WeatherSectionProps) {
           suffix="°"
           style={styles.temperatureText}
           decimalPlaces={1}
+          shouldAnimate={shouldAnimate}
         />
       </View>
 
@@ -38,6 +40,7 @@ export function WeatherSection({ weather, waterQuality }: WeatherSectionProps) {
           value={weather.humidity}
           suffix="%"
           icon="💧"
+          shouldAnimate={shouldAnimate}
         />
         <MetricCard
           label="풍속"
@@ -45,12 +48,14 @@ export function WeatherSection({ weather, waterQuality }: WeatherSectionProps) {
           suffix="m/s"
           icon="💨"
           decimalPlaces={1}
+          shouldAnimate={shouldAnimate}
         />
         <MetricCard
           label="강수확률"
           value={weather.precipitationProbability}
           suffix="%"
           icon="🌧"
+          shouldAnimate={shouldAnimate}
         />
         {waterQuality && (
           <MetricCard
@@ -59,6 +64,7 @@ export function WeatherSection({ weather, waterQuality }: WeatherSectionProps) {
             suffix="°C"
             icon="🌊"
             decimalPlaces={1}
+            shouldAnimate={shouldAnimate}
           />
         )}
       </View>
@@ -72,6 +78,7 @@ interface MetricCardProps {
   suffix: string;
   icon: string;
   decimalPlaces?: number;
+  shouldAnimate?: boolean;
 }
 
 function MetricCard({
@@ -80,6 +87,7 @@ function MetricCard({
   suffix,
   icon,
   decimalPlaces = 0,
+  shouldAnimate = true,
 }: MetricCardProps) {
   return (
     <View style={styles.metricCard}>
@@ -90,6 +98,7 @@ function MetricCard({
         style={styles.metricValue}
         decimalPlaces={decimalPlaces}
         duration={1200}
+        shouldAnimate={shouldAnimate}
       />
       <Text style={styles.metricLabel}>{label}</Text>
     </View>

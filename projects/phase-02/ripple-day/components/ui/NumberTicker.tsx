@@ -7,6 +7,7 @@ interface NumberTickerProps {
   suffix?: string;
   style?: object;
   decimalPlaces?: number;
+  shouldAnimate?: boolean;
 }
 
 export function NumberTicker({
@@ -15,17 +16,20 @@ export function NumberTicker({
   suffix = "",
   style,
   decimalPlaces = 0,
+  shouldAnimate = true,
 }: NumberTickerProps) {
   const animatedValue = useRef(new Animated.Value(0)).current;
   const displayValue = useRef(0);
 
   useEffect(() => {
+    if (!shouldAnimate) return;
+    animatedValue.setValue(0);
     Animated.timing(animatedValue, {
       toValue: value,
       duration,
       useNativeDriver: false,
     }).start();
-  }, [value, duration, animatedValue]);
+  }, [value, duration, animatedValue, shouldAnimate]);
 
   const [displayText, setDisplayText] = React.useState(
     value.toFixed(decimalPlaces) + suffix,
