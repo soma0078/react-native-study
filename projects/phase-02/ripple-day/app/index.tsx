@@ -21,7 +21,9 @@ import { WaveEffect } from "@/components/ui/WaveEffect";
 import { SplashScreenView } from "@/components/ui/SplashScreenView";
 import { Activity } from "@/types/activity";
 
-SplashScreen.preventAutoHideAsync();
+void SplashScreen.preventAutoHideAsync().catch(() => {
+  // 이미 호출되었거나 상태 불일치로 실패할 수 있으므로 무시
+});
 
 export default function HomeScreen() {
   const { permissionStatus, isChecking, coords, locationName } = useLocation();
@@ -51,7 +53,9 @@ export default function HomeScreen() {
 
   // 네이티브 스플래시 숨기기 (커스텀 스플래시로 전환)
   useEffect(() => {
-    SplashScreen.hideAsync();
+    void SplashScreen.hideAsync().catch(() => {
+      // 이미 숨겨졌거나 상태 불일치로 실패할 수 있으므로 무시
+    });
   }, []);
 
   // 커스텀 스플래시 종료 후 콘텐츠 페이드인 + 숫자 애니메이션 시작

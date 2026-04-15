@@ -32,8 +32,10 @@ export default function PermissionScreen() {
   }, [fadeAnim, slideAnim]);
 
   const handleAllow = async () => {
-    await requestPermission();
-    router.replace("/");
+    const granted = await requestPermission();
+    if (granted) {
+      router.replace("/");
+    }
   };
 
   const handleSkip = () => {

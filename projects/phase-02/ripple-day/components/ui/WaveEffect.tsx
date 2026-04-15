@@ -5,7 +5,6 @@ const { width } = Dimensions.get("window");
 
 interface WaveProps {
   color?: string;
-  opacity?: number;
   speed?: number;
   amplitude?: number;
   verticalOffset?: number;
@@ -22,7 +21,7 @@ function SingleWave({
   const translateY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    Animated.loop(
+    const loopX = Animated.loop(
       Animated.sequence([
         Animated.delay(delay),
         Animated.timing(translateX, {
@@ -36,9 +35,9 @@ function SingleWave({
           useNativeDriver: true,
         }),
       ]),
-    ).start();
+    );
 
-    Animated.loop(
+    const loopY = Animated.loop(
       Animated.sequence([
         Animated.timing(translateY, {
           toValue: amplitude,
@@ -51,7 +50,15 @@ function SingleWave({
           useNativeDriver: true,
         }),
       ]),
-    ).start();
+    );
+
+    loopX.start();
+    loopY.start();
+
+    return () => {
+      loopX.stop();
+      loopY.stop();
+    };
   }, [translateX, translateY, speed, amplitude, delay]);
 
   return (

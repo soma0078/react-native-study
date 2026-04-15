@@ -14,18 +14,30 @@ function formatDate(date: Date): string {
   return `${y}${m}${d}`;
 }
 
-function getBaseTime(date: Date): string {
+function getBaseDateTime(date: Date): { baseDate: string; baseTime: string } {
   const hour = date.getHours();
   const minute = date.getMinutes();
   // 기상청 단기예보 발표 시각: 0200, 0500, 0800, 1100, 1400, 1700, 2000, 2300
   const baseTimes = [2, 5, 8, 11, 14, 17, 20, 23];
+
+  // 02:10 이전이면 전날 2300 발표 데이터를 사용
+  const isBeforeFirstRelease = hour < 2 || (hour === 2 && minute < 10);
+  if (isBeforeFirstRelease) {
+    const yesterday = new Date(date);
+    yesterday.setDate(yesterday.getDate() - 1);
+    return { baseDate: formatDate(yesterday), baseTime: "2300" };
+  }
+
   let baseHour = baseTimes[0];
   for (const t of baseTimes) {
     if (hour > t || (hour === t && minute >= 10)) {
       baseHour = t;
     }
   }
-  return String(baseHour).padStart(2, "0") + "00";
+  return {
+    baseDate: formatDate(date),
+    baseTime: String(baseHour).padStart(2, "0") + "00",
+  };
 }
 
 async function fetchWeatherData(
@@ -34,12 +46,11 @@ async function fetchWeatherData(
 ): Promise<WeatherData> {
   const { nx, ny } = latLonToGrid(coords.latitude, coords.longitude);
   const now = new Date();
-  const baseDate = formatDate(now);
-  const baseTime = getBaseTime(now);
+  const { baseDate, baseTime } = getBaseDateTime(now);
 
   const url =
     `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst` +
-    `?serviceKey=${apiKey}` +
+    `?serviceKey=${encodeURIComponent(apiKey)}` +
     `&numOfRows=100` +
     `&pageNo=1` +
     `&dataType=JSON` +
@@ -60,7 +71,7 @@ async function fetchWeatherData(
   }> = json?.response?.body?.items?.item ?? [];
 
   // 가장 가까운 예보 시각 기준으로 파싱
-  const now_str =
+  const nowStr =
     formatDate(now) + String(now.getHours()).padStart(2, "0") + "00";
   const grouped: Record<string, Record<string, string>> = {};
 
@@ -71,7 +82,7 @@ async function fetchWeatherData(
   }
 
   const times = Object.keys(grouped).sort();
-  const nearestKey = times.find((t) => t >= now_str) ?? times[0];
+  const nearestKey = times.find((t) => t >= nowStr) ?? times[0];
   const data = grouped[nearestKey] ?? {};
 
   return {
@@ -124,7 +135,9 @@ export function useWeather(coords: Coordinates) {
 
   const load = useCallback(async () => {
     if (!apiKey) {
-      setError("날씨 API 키가 설정되지 않았어요.\n.env.local 파일을 확인해주세요.");
+      setError(
+        "날씨 API 키가 설정되지 않았어요.\n.env.local 파일을 확인해주세요.",
+      );
       setState("error");
       return;
     }

@@ -145,6 +145,9 @@ export function ActivityBottomSheet({
                     style={styles.checklistRow}
                     onPress={() => toggleItem(item.id)}
                     activeOpacity={0.7}
+                    accessibilityRole="checkbox"
+                    accessibilityState={{ checked: item.checked }}
+                    accessibilityLabel={item.label}
                   >
                     <View
                       style={[

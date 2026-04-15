@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from "react";
-import { Animated, Text, StyleSheet } from "react-native";
+import { Animated, Text, StyleSheet, StyleProp, TextStyle } from "react-native";
 
 interface NumberTickerProps {
   value: number;
   duration?: number;
   suffix?: string;
-  style?: object;
+  style?: StyleProp<TextStyle>;
   decimalPlaces?: number;
   shouldAnimate?: boolean;
 }
@@ -29,7 +29,6 @@ export function NumberTicker({
       setDisplayText(value.toFixed(decimalPlaces) + suffix);
       return;
     }
-    animatedValue.setValue(0);
     Animated.timing(animatedValue, {
       toValue: value,
       duration,
