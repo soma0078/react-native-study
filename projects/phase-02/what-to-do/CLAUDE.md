@@ -1,27 +1,20 @@
 # CLAUDE.md
 
-## 앱 개요
-
 날씨 + 한강 수온 확인 및 날씨 기반 활동 추천 앱
 
-## 기술 스택
-
-Expo SDK 54, expo-router, TanStack Query, ky, Reanimated 4, expo-location
+**기술 스택:** Expo SDK 54, expo-router, TanStack Query, ky, Reanimated 4, expo-location
 
 ## 폴더 구조
 
 ```
-app/           # 스크린 (expo-router)
-components/    # UI 컴포넌트
-hooks/         # 커스텀 훅
-services/      # API 호출 함수
-lib/           # 공통 설정 (ky 인스턴스 등)
-constants/     # 정적 데이터 및 조건 매핑
-types/         # 타입 정의
+app/           # expo-router 스크린. UI 조합만. 비즈니스 로직 금지
+components/    # 재사용 UI 컴포넌트
+hooks/         # useQuery 래핑 커스텀 훅
+services/      # API 호출 함수. ky 인스턴스 사용
+lib/           # ky 인스턴스 등 공통 설정
+constants/     # 정적 데이터, 조건 매핑, 유틸 함수 포함 가능
+types/         # 타입 정의 (raw API 타입 + 도메인 타입)
 ```
 
-## 컨벤션
-
-- 임포트 경로는 `@/*` alias를 사용한다. 상대경로(`../`)는 쓰지 않는다.
-- API 키는 `.env`의 `EXPO_PUBLIC_*` 형식으로 저장한다.
-- `queryKey`는 `[도메인, 파라미터]` 형태로 작성한다.
+- 컨벤션 → [`.claude/conventions.md`](.claude/conventions.md)
+- 아키텍처 → [`.claude/architecture.md`](.claude/architecture.md)

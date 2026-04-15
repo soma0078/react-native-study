@@ -1,37 +1,77 @@
-# 오늘 뭐하지? (What To Do)
+# 오늘 뭐하지?
 
-날씨 + 한강 수온 확인 및 날씨 기반 활동 추천 React Native 앱
+React Native + Expo로 실시간 날씨·한강 수온을 확인하고 날씨 기반 활동을 추천하는 앱
 
 ## 기술 스택
 
-- Expo SDK 54
-- expo-router v6
-- TanStack Query v5
-- ky
-- React Native Animated API + Reanimated 4
-- expo-location
+- React Native 0.81.5 / React 19.1.0
+- Expo SDK 54 / expo-router v6
+- TypeScript 5.9.2
+- TanStack Query v5 (서버 상태 캐싱·재시도)
+- ky v2 (HTTP 클라이언트)
+- React Native Reanimated v4 (고성능 애니메이션)
+- @gorhom/bottom-sheet v5 (하단 시트 모달)
+- expo-location (위치 권한 + 좌표 조회)
 
 ## 실행 방법
 
 ```bash
 npm install
-npm start
-npm run ios
-npm run android
+npx expo start
 ```
 
-## 구현 사항
+## 구현 화면
 
-- [ ]
+### 홈 화면 (단일 스크린)
 
-## 프로젝트 구조
+- 현재 날씨 (기온, 체감온도, 습도, 풍속, 강수 여부) 표시
+- 한강 수온 표시 (서울 열린데이터광장 API)
+- 날씨 조건별 활동 카드 3~5개 추천
+- 날씨 조건에 따른 배경 색상 전환 (Reanimated 색상 보간)
+- 로딩 중 스켈레톤 UI
+- 위치 권한 거부 시 서울 시청 좌표로 자동 폴백
+- 에러 상태 → 흔들림(shake) 애니메이션 + 재시도 버튼
+
+### 활동 상세 (Bottom Sheet)
+
+- 활동 카드 탭 → 하단 시트 슬라이드 업
+- 적합도(별점), 소요 시간, 준비물 체크리스트 표시
+- 체크리스트 항목 순차 등장 애니메이션 (cascading fade + spring)
+
+## TIL
+
+- [26-04-16](../../../members/soma0078/til/26-04-16.md) — TanStack Query v5, KMA API, Reanimated v4, expo-location
+
+## 디렉토리 구조
 
 ```text
-app/           # 스크린 (expo-router)
-components/    # UI 컴포넌트
-hooks/         # 커스텀 훅
-services/      # API 호출 함수
-lib/           # 설정
-constants/     # 상수
-types/         # 타입 정의
+├── app/
+│   ├── _layout.tsx          # 루트 레이아웃 (Provider 중첩)
+│   └── index.tsx            # 홈 스크린 (날씨 + 활동 추천)
+├── components/
+│   ├── WeatherSection.tsx          # 날씨 수치 표시
+│   ├── ActivityCard.tsx            # 활동 카드 (제스처 애니메이션)
+│   ├── ActivityBottomSheet.tsx     # 활동 상세 하단 시트
+│   ├── AnimatedGradientBackground.tsx  # 날씨별 배경 색상 전환
+│   ├── ActivitySkeleton.tsx        # 활동 카드 스켈레톤
+│   └── WeatherSkeleton.tsx         # 날씨 섹션 스켈레톤
+├── hooks/
+│   ├── useLocation.ts        # 위치 권한 + 좌표
+│   ├── useGetWeather.ts      # 날씨 쿼리 (폴백 포함)
+│   └── useGetHangangTemp.ts  # 한강 수온 쿼리
+├── services/
+│   ├── weather.ts            # KMA API 파싱 + 체감온도 계산
+│   └── hangang.ts            # 서울 열린데이터 API 래핑
+├── lib/
+│   └── api.ts                # ky 인스턴스 (API별 baseURL + 인증)
+├── constants/
+│   ├── activities.ts         # 조건별 활동 정의 (15개)
+│   ├── weatherCondition.ts   # 날씨 조건 판별 + 메시지
+│   ├── queryKeys.ts          # Query Key Factory
+│   └── status.ts             # LocationStatus 상수
+└── types/
+    ├── activity.ts           # Activity 인터페이스
+    ├── weather.ts            # KMA 원시 타입 + 도메인 타입
+    ├── hangang.ts            # 한강 API 응답 타입
+    └── status.ts             # LocationStatus 타입
 ```
