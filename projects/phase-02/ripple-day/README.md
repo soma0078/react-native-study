@@ -24,7 +24,7 @@
 
 ## 기술 스택
 
-- **Framework**: React Native + Expo (SDK 53)
+- **Framework**: React Native + Expo (SDK 54)
 - **Router**: Expo Router (파일 기반 라우팅)
 - **Language**: TypeScript
 - **주요 라이브러리**:
