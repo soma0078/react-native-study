@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "ripple-day",
+    "slug": "ripple-day",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "rippleday",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#0a1628"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.seungyeon.rippleday",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "현재 위치를 기반으로 날씨 정보를 가져옵니다.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "현재 위치를 기반으로 날씨 정보를 가져옵니다."
+      }
+    },
+    "android": {
+      "package": "com.seungyeon.rippleday",
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-splash-screen",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "현재 위치를 기반으로 날씨 정보를 가져옵니다."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
