@@ -4,10 +4,8 @@ import {
   WaterQualityData,
   WeatherLoadingState,
 } from "@/types/weather";
-
-// 기상청 API 격자 좌표 (서울 기준 고정값)
-const GRID_X = 60;
-const GRID_Y = 127;
+import { latLonToGrid } from "@/utils/gridCoord";
+import { Coordinates } from "@/hooks/useLocation";
 
 function formatDate(date: Date): string {
   const y = date.getFullYear();
@@ -30,7 +28,11 @@ function getBaseTime(date: Date): string {
   return String(baseHour).padStart(2, "0") + "00";
 }
 
-async function fetchWeatherData(apiKey: string): Promise<WeatherData> {
+async function fetchWeatherData(
+  apiKey: string,
+  coords: Coordinates,
+): Promise<WeatherData> {
+  const { nx, ny } = latLonToGrid(coords.latitude, coords.longitude);
   const now = new Date();
   const baseDate = formatDate(now);
   const baseTime = getBaseTime(now);
@@ -43,8 +45,8 @@ async function fetchWeatherData(apiKey: string): Promise<WeatherData> {
     `&dataType=JSON` +
     `&base_date=${baseDate}` +
     `&base_time=${baseTime}` +
-    `&nx=${GRID_X}` +
-    `&ny=${GRID_Y}`;
+    `&nx=${nx}` +
+    `&ny=${ny}`;
 
   const res = await fetch(url);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -110,7 +112,7 @@ async function fetchWaterQuality(): Promise<WaterQualityData> {
   }
 }
 
-export function useWeather() {
+export function useWeather(coords: Coordinates) {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [waterQuality, setWaterQuality] = useState<WaterQualityData | null>(
     null,
@@ -130,7 +132,7 @@ export function useWeather() {
     setError(null);
     try {
       const [weatherData, waterData] = await Promise.all([
-        fetchWeatherData(apiKey),
+        fetchWeatherData(apiKey, coords),
         fetchWaterQuality(),
       ]);
       setWeather(weatherData);
@@ -142,7 +144,7 @@ export function useWeather() {
       );
       setState("error");
     }
-  }, [apiKey]);
+  }, [apiKey, coords.latitude, coords.longitude]);
 
   useEffect(() => {
     load();

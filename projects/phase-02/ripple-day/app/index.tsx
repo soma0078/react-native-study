@@ -24,8 +24,8 @@ import { Activity } from "@/types/activity";
 SplashScreen.preventAutoHideAsync();
 
 export default function HomeScreen() {
-  const { weather, waterQuality, state, error, reload } = useWeather();
-  const { permissionStatus, isChecking } = useLocation();
+  const { permissionStatus, isChecking, coords, locationName } = useLocation();
+  const { weather, waterQuality, state, error, reload } = useWeather(coords);
 
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(
     null,
@@ -120,6 +120,7 @@ export default function HomeScreen() {
                   weather={weather}
                   waterQuality={waterQuality}
                   shouldAnimate={shouldAnimate}
+                  locationName={locationName}
                 />
               )}
               <ActivityList
@@ -135,10 +136,7 @@ export default function HomeScreen() {
 
       {/* 커스텀 스플래시 스크린 */}
       {showSplash && (
-        <SplashScreenView
-          dataReady={dataReady}
-          onFinish={handleSplashFinish}
-        />
+        <SplashScreenView dataReady={dataReady} onFinish={handleSplashFinish} />
       )}
 
       {/* 활동 상세 Bottom Sheet */}

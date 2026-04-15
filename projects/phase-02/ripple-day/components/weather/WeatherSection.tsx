@@ -8,9 +8,10 @@ interface WeatherSectionProps {
   weather: WeatherData;
   waterQuality: WaterQualityData | null;
   shouldAnimate?: boolean;
+  locationName?: string;
 }
 
-export function WeatherSection({ weather, waterQuality, shouldAnimate = true }: WeatherSectionProps) {
+export function WeatherSection({ weather, waterQuality, shouldAnimate = true, locationName }: WeatherSectionProps) {
   const mood = getMoodByTemperature(weather.temperature);
 
   return (
@@ -20,6 +21,9 @@ export function WeatherSection({ weather, waterQuality, shouldAnimate = true }: 
         <Text style={styles.moodEmoji}>{mood.emoji}</Text>
         <Text style={styles.moodMessage}>{mood.message}</Text>
         <Text style={styles.moodSubMessage}>{mood.subMessage}</Text>
+        {locationName && (
+          <Text style={styles.locationText}>📍 {locationName}</Text>
+        )}
       </View>
 
       {/* 메인 온도 */}
@@ -129,6 +133,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "rgba(255,255,255,0.75)",
     textAlign: "center",
+  },
+  locationText: {
+    fontSize: 13,
+    color: "rgba(255,255,255,0.55)",
+    marginTop: 8,
   },
   temperatureContainer: {
     marginVertical: 12,
