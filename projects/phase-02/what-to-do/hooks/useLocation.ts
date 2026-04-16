@@ -58,7 +58,7 @@ export function useLocation(): LocationState {
         setState({
           coords: null,
           locationName: null,
-          status: LOCATION_STATUS.DENIED,
+          status: LOCATION_STATUS.ERROR,
         });
       }
     })();

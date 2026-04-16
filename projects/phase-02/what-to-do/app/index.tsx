@@ -85,30 +85,33 @@ export default function HomeScreen() {
         >
           {/* 날씨 섹션  */}
           <View style={styles.weatherCard}>
-            {locationStatus === LOCATION_STATUS.DENIED && (
-              <Text style={styles.permissionBanner}>
-                위치 권한이 없어 서울 기준으로 표시됩니다
-              </Text>
-            )}
-
             {isLoading ? (
               <WeatherSkeleton />
-            ) : weatherError ? (
+            ) : locationStatus === LOCATION_STATUS.ERROR || weatherError ? (
               <Animated.View style={[styles.errorContainer, shakeStyle]}>
                 <Text style={styles.errorText}>{errorMessage}</Text>
                 <Pressable style={styles.retryButton} onPress={() => refetch()}>
                   <Text style={styles.retryText}>다시 시도</Text>
                 </Pressable>
               </Animated.View>
-            ) : weather ? (
-              <WeatherSection
-                weather={weather}
-                condition={condition}
-                moodMessage={moodMessage}
-                waterTemp={waterTemp ?? null}
-                locationName={locationName}
-              />
-            ) : null}
+            ) : (
+              <>
+                {locationStatus === LOCATION_STATUS.DENIED && (
+                  <Text style={styles.permissionBanner}>
+                    위치 권한이 없어 서울 기준으로 표시됩니다
+                  </Text>
+                )}
+                {weather ? (
+                  <WeatherSection
+                    weather={weather}
+                    condition={condition}
+                    moodMessage={moodMessage}
+                    waterTemp={waterTemp ?? null}
+                    locationName={locationName}
+                  />
+                ) : null}
+              </>
+            )}
           </View>
         </ScrollView>
       </SafeAreaView>
