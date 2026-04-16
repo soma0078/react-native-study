@@ -49,6 +49,15 @@ export const GRADIENT_COLORS: Record<WeatherCondition, [string, string]> = {
   [WEATHER_CONDITIONS.RAINY]: ["#263238", "#455A64"],
 };
 
+export function getWindDescription(windSpeed: number): string {
+  if (windSpeed < 1) return "고요";
+  if (windSpeed < 3) return "실바람";
+  if (windSpeed < 5) return "산들바람";
+  if (windSpeed < 8) return "건들바람";
+  if (windSpeed < 11) return "흔들바람";
+  return "강풍";
+}
+
 export function getWeatherErrorMessage(error: unknown): string {
   if (error instanceof TypeError) return "네트워크 연결을 확인해 주세요";
   if (error instanceof Error && error.name === "TimeoutError")

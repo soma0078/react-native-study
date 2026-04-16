@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { WEATHER_ICON, getWeatherLabel } from '@/constants/weatherCondition';
+import { WEATHER_ICON, getWeatherLabel, getWindDescription } from '@/constants/weatherCondition';
 import { WeatherCondition, WeatherResponse } from '@/types/weather';
 
 interface Props {
@@ -36,7 +36,7 @@ export function WeatherSection({ weather, condition, moodMessage, waterTemp, loc
       <View style={styles.statsRow}>
         <StatItem icon="thermometer" label="체감" value={`${Math.round(weather.feelsLike)}°`} />
         <StatItem icon="water" label="습도" value={`${weather.humidity}%`} />
-        <StatItem icon="speedometer" label="풍속" value={`${weather.windSpeed}m/s`} />
+        <StatItem icon="speedometer" label="풍속" value={`${weather.windSpeed}m/s`} subValue={getWindDescription(weather.windSpeed)} />
         {waterTemp !== null && (
           <StatItem icon="fish" label="수온" value={`${waterTemp}°`} />
         )}
@@ -49,16 +49,19 @@ function StatItem({
   icon,
   label,
   value,
+  subValue,
 }: {
   icon: string;
   label: string;
   value: string;
+  subValue?: string;
 }) {
   return (
     <View style={styles.stat}>
       <Ionicons name={icon as any} size={16} color="rgba(255,255,255,0.7)" />
       <Text style={styles.statLabel}>{label}</Text>
       <Text style={styles.statValue}>{value}</Text>
+      {subValue && <Text style={styles.statSubValue}>{subValue}</Text>}
     </View>
   );
 }
@@ -83,4 +86,5 @@ const styles = StyleSheet.create({
   stat: { alignItems: 'center', gap: 4 },
   statLabel: { fontSize: 11, color: 'rgba(255,255,255,0.65)' },
   statValue: { fontSize: 14, fontWeight: '600', color: '#fff' },
+  statSubValue: { fontSize: 10, color: 'rgba(255,255,255,0.55)' },
 });
