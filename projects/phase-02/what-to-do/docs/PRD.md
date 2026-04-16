@@ -135,3 +135,46 @@ const { coords } = await Location.getCurrentPositionAsync();
 EXPO_PUBLIC_WEATHER_API_KEY=
 EXPO_PUBLIC_SEOUL_API_KEY=
 ```
+
+---
+
+## 시스템 플로우
+
+```mermaid
+flowchart TD
+    A([앱 시작]) --> B[expo-location\n권한 요청]
+
+    B --> C{LocationStatus}
+    C -->|GRANTED| D[getCurrentPositionAsync\n위경도 획득]
+    C -->|DENIED| E[서울 시청 좌표 폴백\n37.5665° N, 126.9780° E]
+    C -->|ERROR| E
+
+    D & E --> F[위경도 → KMA 격자 변환\nkma-grid]
+    F --> G[KMA 동네예보 API 호출\nTMP · SKY · PTY · REH · WSD]
+    F --> H[서울 열린데이터 API 호출\n한강 수온]
+
+    G --> I{날씨 응답}
+    I -->|실패\n네트워크/타임아웃| J[getWeatherErrorMessage\n에러 메시지 분류]
+    J --> K[shake 애니메이션\n재시도 버튼 노출]
+    K -->|refetch| G
+    I -->|성공| L[WeatherResponse 파싱\n체감온도 계산\nHeat Index or Wind Chill]
+
+    H --> M{수온 응답}
+    M -->|실패| N[waterTemp = null\n수온 위젯 숨김]
+    M -->|성공| O[첫 번째 측정소 수온 사용]
+
+    L --> P[getWeatherCondition\nhot_sunny / warm_sunny\ncool_sunny / cloudy / rainy]
+    P --> Q[getActivitiesByCondition\n조건별 활동 3~5개 필터]
+    P --> R[GRADIENT_COLORS 매핑\nReanimated 색상 보간 800ms]
+
+    Q --> S[ActivityCard 목록 렌더링]
+    S --> T{카드 탭}
+    T --> U[ActivityBottomSheet present]
+
+    U --> V{LocationStatus}
+    V -->|DENIED / ERROR| W[activities.ts 정적 place\n대표 장소 표시]
+    V -->|GRANTED| X[카카오 로컬 API 호출\n키워드 + 사용자 좌표\n반경 검색]
+    X --> Y{장소 응답}
+    Y -->|실패| W
+    Y -->|성공| Z[가까운 장소 표시\n이름 · 주소 · 거리]
+```
