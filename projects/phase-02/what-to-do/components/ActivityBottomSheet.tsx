@@ -104,6 +104,18 @@ export function ActivityBottomSheet({ activity, onClose }: Props) {
                 </Text>
               </View>
 
+              {activity.place && (
+                <View style={styles.placeRow}>
+                  <Ionicons name="location-outline" size={16} color="#666" />
+                  <View style={styles.placeText}>
+                    <Text style={styles.placeName}>{activity.place.name}</Text>
+                    <Text style={styles.placeAddress}>
+                      {activity.place.address}
+                    </Text>
+                  </View>
+                </View>
+              )}
+
               <Text style={styles.sectionTitle}>준비물 체크리스트</Text>
               {activity.checklist.map((item, i) => (
                 <CheckItem key={`${activity.id}-${i}`} item={item} index={i} />
@@ -149,6 +161,18 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   durationText: { fontSize: 14, color: "#555" },
+  placeRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 6,
+    backgroundColor: "#F5F5F5",
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 20,
+  },
+  placeText: { flex: 1, gap: 2 },
+  placeName: { fontSize: 14, fontWeight: "600", color: "#333" },
+  placeAddress: { fontSize: 12, color: "#888" },
   sectionTitle: {
     fontSize: 15,
     fontWeight: "700",
