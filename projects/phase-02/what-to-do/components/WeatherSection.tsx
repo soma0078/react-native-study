@@ -9,10 +9,11 @@ interface Props {
   condition: WeatherCondition;
   moodMessage: string;
   waterTemp: number | null;
+  waterTempStation: string | null;
   locationName: string | null;
 }
 
-export function WeatherSection({ weather, condition, moodMessage, waterTemp, locationName }: Props) {
+export function WeatherSection({ weather, condition, moodMessage, waterTemp, waterTempStation, locationName }: Props) {
   const iconName = WEATHER_ICON[condition] as any;
   const label = getWeatherLabel(weather.sky, weather.pty);
 
@@ -38,7 +39,7 @@ export function WeatherSection({ weather, condition, moodMessage, waterTemp, loc
         <StatItem icon="water" label="습도" value={`${weather.humidity}%`} />
         <StatItem icon="speedometer" label="풍속" value={`${weather.windSpeed}m/s`} subValue={getWindDescription(weather.windSpeed)} />
         {waterTemp !== null && (
-          <StatItem icon="fish" label="수온" value={`${waterTemp}°`} />
+          <StatItem icon="fish" label="수온" value={`${waterTemp}°`} subValue={waterTempStation ?? undefined} />
         )}
       </View>
     </View>

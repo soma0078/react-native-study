@@ -1,11 +1,11 @@
 import { format, subDays, subMinutes } from "date-fns";
 import { KmaGridConverter } from "kma-grid";
 import { weatherApi } from "@/lib/api";
+import { Coords } from "@/types/coords";
 import {
   KmaForecastItem,
   KmaResponse,
   WeatherResponse,
-  WeatherRequest,
 } from "@/types/weather";
 
 // 동네예보 발표 시각 (정시 기준, 10분 후 제공)
@@ -107,7 +107,7 @@ function parseItems(items: KmaForecastItem[]): WeatherResponse {
 export async function getWeather({
   lat,
   lon,
-}: WeatherRequest): Promise<WeatherResponse> {
+}: Coords): Promise<WeatherResponse> {
   const { x: nx, y: ny } = gridConverter.toGrid(lat, lon);
   const { baseDate, baseTime } = getBaseDateTime();
 

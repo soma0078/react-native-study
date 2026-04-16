@@ -24,11 +24,6 @@ export interface KmaResponse {
   };
 }
 
-export interface WeatherRequest {
-  lat: number;
-  lon: number;
-}
-
 export interface WeatherResponse {
   temp: number; // 기온 (°C)
   feelsLike: number; // 체감기온 (°C, 계산값)

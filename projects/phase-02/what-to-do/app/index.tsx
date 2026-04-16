@@ -42,7 +42,10 @@ export default function HomeScreen() {
     error,
     refetch,
   } = useGetWeather({ lat: coords?.latitude, lon: coords?.longitude });
-  const { data: waterTemp } = useGetHangangTemp();
+  const { data: waterTemp } = useGetHangangTemp({
+    lat: coords?.latitude,
+    lon: coords?.longitude,
+  });
 
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
 
@@ -106,7 +109,8 @@ export default function HomeScreen() {
                     weather={weather}
                     condition={condition}
                     moodMessage={moodMessage}
-                    waterTemp={waterTemp ?? null}
+                    waterTemp={waterTemp?.temp ?? null}
+                    waterTempStation={waterTemp?.stationName ?? null}
                     locationName={locationName}
                   />
                 ) : null}
