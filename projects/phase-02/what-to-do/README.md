@@ -38,9 +38,10 @@ npx expo start
 - 적합도(별점), 소요 시간, 준비물 체크리스트 표시
 - 체크리스트 항목 순차 등장 애니메이션 (cascading fade + spring)
 
-## TIL
+## DOCS
 
-- [26-04-16](../../../members/soma0078/til/26-04-16.md) — TanStack Query v5, KMA API, Reanimated v4, expo-location
+- [TIL 2026-04-16](../../../members/soma0078/til/26-04-16.md) — TanStack Query v5, KMA API, Reanimated v4, expo-location
+- [트러블 슈팅](docs/trouble-shooting.md) — 위치 조회 실패 (Race Condition, 시뮬레이터/에뮬레이터 위치 설정)
 
 ## 디렉토리 구조
 
@@ -75,3 +76,9 @@ npx expo start
     ├── hangang.ts            # 한강 API 응답 타입
     └── status.ts             # LocationStatus 타입
 ```
+
+## 추가 구현
+
+- [ ] 활동별 장소/위치 정보 추가
+- [ ] 날씨 정보 위젯화 (기온, 수온, 습도 등을 개별 위젯으로 분리해 사용자가 커스터마이징 가능)
+- [ ] 풍속 설명 헬퍼 추가

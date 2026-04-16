@@ -9,14 +9,21 @@ interface Props {
   condition: WeatherCondition;
   moodMessage: string;
   waterTemp: number | null;
+  locationName: string | null;
 }
 
-export function WeatherSection({ weather, condition, moodMessage, waterTemp }: Props) {
+export function WeatherSection({ weather, condition, moodMessage, waterTemp, locationName }: Props) {
   const iconName = WEATHER_ICON[condition] as any;
   const label = getWeatherLabel(weather.sky, weather.pty);
 
   return (
     <View style={styles.container}>
+      {locationName && (
+        <View style={styles.locationRow}>
+          <Ionicons name="location-sharp" size={14} color="rgba(255,255,255,0.75)" />
+          <Text style={styles.locationText}>{locationName}</Text>
+        </View>
+      )}
       <Ionicons name={iconName} size={80} color="rgba(255,255,255,0.9)" />
 
       <View style={styles.tempRow}>
@@ -58,6 +65,8 @@ function StatItem({
 
 const styles = StyleSheet.create({
   container: { alignItems: 'center', paddingTop: 24, gap: 12 },
+  locationRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  locationText: { fontSize: 14, color: 'rgba(255,255,255,0.75)', fontWeight: '500' },
   tempRow: { flexDirection: 'row', alignItems: 'flex-end', gap: 8 },
   temp: { fontSize: 64, fontWeight: '200', color: '#fff', lineHeight: 72 },
   tempLabel: { fontSize: 20, color: 'rgba(255,255,255,0.8)', paddingBottom: 12 },

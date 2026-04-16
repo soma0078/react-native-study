@@ -34,7 +34,7 @@ import { Activity } from "@/types/activity";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
-  const { coords, status: locationStatus } = useLocation();
+  const { coords, locationName, status: locationStatus } = useLocation();
   const {
     data: weather,
     isLoading: weatherLoading,
@@ -44,9 +44,7 @@ export default function HomeScreen() {
   } = useGetWeather({ lat: coords?.latitude, lon: coords?.longitude });
   const { data: waterTemp } = useGetHangangTemp();
 
-  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(
-    null,
-  );
+  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
 
   const condition = weather ? getWeatherCondition(weather) : "warm_sunny";
   const moodMessage = weather ? getMoodMessage(condition) : "";
@@ -108,6 +106,7 @@ export default function HomeScreen() {
                 condition={condition}
                 moodMessage={moodMessage}
                 waterTemp={waterTemp ?? null}
+                locationName={locationName}
               />
             ) : null}
           </View>

@@ -1,4 +1,3 @@
-import * as Location from "expo-location";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { useEffect } from "react";
@@ -15,17 +14,8 @@ SplashScreen.setOptions({
 
 export default function RootLayout() {
   useEffect(() => {
-    const initializeApp = async () => {
-      try {
-        await Location.requestForegroundPermissionsAsync();
-      } catch (err) {
-        console.error("Location permission request error:", err);
-      } finally {
-        await SplashScreen.hideAsync();
-      }
-    };
-
-    initializeApp();
+    // 앱이 준비되면 SplashScreen 숨김
+    SplashScreen.hideAsync();
   }, []);
 
   return (
